@@ -15,13 +15,14 @@
 // Changed by Opera.Wang@gmail.com to make it loadable as an module
 // Removed 'jQuery.' as jQuery maybe not avaliable
 // Removed IE stuff
+//Changes for TB 78+ (c) by Klaus Buecher/opto
 "use strict";
 
 var EXPORTED_SYMBOLS = ["ExpressionSearchaop"];
 
 var ExpressionSearchaop;
 
-Cu.import("resource://gre/modules/Services.jsm");
+var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 (function() {
 

@@ -1,19 +1,22 @@
 // Opera Wang, 2010/1/15
 // GPL V3 / MPL
 // debug utils
+//Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 "use strict";
 const { stack: Cs } = Components;
-const { loader, require } = Cu.import("resource://devtools/shared/Loader.jsm", {});
-Cu.import("resource://gre/modules/Services.jsm");
-Cu.import("resource:///modules/iteratorUtils.jsm"); // import toXPCOMArray
-
+var { loader, require } = ChromeUtils.import("resource://devtools/shared/Loader.jsm");
+//var {Services} =  ChromeUtils.import("resource://gre/modules/Services.jsm");
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+//Cu.import("resource:///modules/iteratorUtils.jsm"); // import toXPCOMArray
+var { fixIterator, toXPCOMArray } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
 // Console.jsm in Gecko < 23 calls dump(), not to Error Console
-const {console} = Cu.import("resource://gre/modules/Console.jsm", {});
+var {console} = ChromeUtils.import("resource://gre/modules/Console.jsm", {});
 
 // for Error Console in Gecko > 44
-let {HUDService} = require("devtools/client/webconsole/hudservice");
+//!let {HUDService} = require("devtools/client/webconsole/hudservice");
 
-const popupImage = "chrome://expressionsearch/skin/statusbar_icon.png";
+let popupWins = {};
+const popupImage = "resource://expressionsearch/skin/statusbar_icon.png";
 var EXPORTED_SYMBOLS = ["ExpressionSearchLog"];
 let ExpressionSearchLog = {
   popupDelay: null,
@@ -23,7 +26,7 @@ let ExpressionSearchLog = {
   popupListener: {
     observe: function(subject, topic, cookie) {
       if ( topic == 'alertclickcallback' ) { // or alertfinished / alertshow(Gecko22)
-        HUDService.openBrowserConsoleOrFocus();
+//!        HUDService.openBrowserConsoleOrFocus();
       } else if ( topic == 'alertfinished' ) {
         delete popupWins[cookie];
       }
@@ -67,10 +70,12 @@ let ExpressionSearchLog = {
     // arguments[12] -> the alert icon URL, optional
     let args = [popupImage, title, msg, true, cookie, 0, '', '', null, false, this.popupListener];
     // win is nsIDOMJSWindow, nsIDOMWindow
-    let win = Services.ww.openWindow(null, 'chrome://global/content/alerts/alert.xul', "_blank", 'chrome,titlebar=no,popup=yes',
+    var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+    let { fixIterator, toXPCOMArray } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+    let win = Services.ww.openWindow(null, 'chrome://global/content/alerts/alert.xhtml', "_blank", 'chrome,titlebar=no,popup=yes',
       // https://alexvincent.us/blog/?p=451
       // https://groups.google.com/forum/#!topic/mozilla.dev.tech.js-engine/NLDZFQJV1dU
-      toXPCOMArray(args.map( function(arg) {
+       toXPCOMArray(args.map( function(arg) {
         let variant = Cc["@mozilla.org/variant;1"].createInstance(Ci.nsIWritableVariant);
         if ( arg && typeof(arg) == 'object' ) variant.setAsInterface(Ci.nsIObserver, arg); // to pass the listener interface
         else variant.setFromVariant(arg);
@@ -149,7 +154,8 @@ let ExpressionSearchLog = {
 
   log: function(msg, popup, info) {
     // https://developer.mozilla.org/en-US/docs/Tools/Web_Console/Custom_output
-    if ( ( typeof(info) != 'undefined' && info ) || !Components || !Cs || !Cs.caller ) {
+    var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+        if ( ( typeof(info) != 'undefined' && info ) || !Components || !Cs || !Cs.caller ) {
       Services.console.logStringMessage(msg);
     } else {
       let scriptError = Cc["@mozilla.org/scripterror;1"].createInstance(Ci.nsIScriptError);
@@ -284,4 +290,3 @@ let ExpressionSearchLog = {
   },
   
 };
-let popupWins = {};

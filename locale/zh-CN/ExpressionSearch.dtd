@@ -51,7 +51,7 @@
 <!ENTITY expressionsearch.dialog.searchmoreheaders "搜索更多的邮件头:">
 <!ENTITY expressionsearch.dialog.searchmoreheaderstooltip "新加的邮件头只能用于搜索新的邮件，或者您可以修复邮件夹:">
 <!ENTITY expressionsearch.dialog.c2s_settings "设置点击搜索">
-<!ENTITY expressionsearch.dialog.help "帮助">
+<!ENTITY expressionsearch.dialog.help "help the TB 78 conversion">
 <!ENTITY expressionsearch.dialog.c2s_replace_title "  搜索前使用正则表达式替换标题  ">
 <!ENTITY expressionsearch.dialog.c2s_match "匹配">
 <!ENTITY expressionsearch.dialog.c2s_replace "替换">

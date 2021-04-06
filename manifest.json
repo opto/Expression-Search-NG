@@ -1,27 +1,48 @@
 {
   "applications": {
     "gecko": {
-      "id": "{03EF8A6E-C972-488f-92FA-98ABC2C9F8B9}",
-      "strict_min_version": "68.0",
-      "strict_max_version": "68.9"
+      "id": "expressionsearch@opto.one",
+      "strict_min_version": "78.0"
+
     }
   },
-  "version": "1.4.2",
+  "version": "2.4beta",
   "manifest_version": 2,
-  "name": "Expression Search / Google Mail UI",
+  "name": "Expression Search / Google Mail UI NG (for TB 78)",
   "description": "Type 'from:fred to:tom' to see all messages from Fred to Tom in the current view.",
-  "author": "Opera Wang V68 by Rich Roth - http://www.tnrglobal.com/2020/05/thunderbird-addons/",
-  "homepage_url": "https://github.com/wangvisual/expression-search",
-  "legacy": {
-    "type": "bootstrap",
-    "options": {
-      "page": "chrome://expressionsearch/content/esPrefDialog.xul",
-      "open_in_tab": true
-    }
-  },
+  "author": "Klaus Buecher, Opera Wang",
+  "homepage_url": "https://github.com/opto/expression-search-NG",
+  
   "icons": {
     "32": "icon.png",
     "48": "icon.png",
     "64": "icon.png"
-  }
+  },
+
+  "background": {
+    "scripts": [
+      "ex-background.js"
+    ]
+  },
+
+  "experiment_apis": {
+    "BootstrapLoader": {
+      "schema": "api/BootstrapLoader/schema.json",
+      "parent": {
+        "scopes": ["addon_parent"],
+        "paths": [["BootstrapLoader"]],
+        "script": "api/BootstrapLoader/implementation.js"
+      }
+    },
+		"Utilities": {
+		  "schema": "api/Utilities/schema.json",
+		  "parent": {
+			"scopes": ["addon_parent"],
+			"paths": [["Utilities"]],
+			"script": "api/Utilities/implementation.js"
+		  
+		   }
+		}
+
+  }  
 }

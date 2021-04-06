@@ -1,3 +1,4 @@
+//Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 "use strict";
 function onLoad() {
   let folderPicker = document.getElementById("esNewFolderPicker");

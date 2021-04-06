@@ -1,14 +1,96 @@
 // Original by Ken Mixter for GMailUI, which is "GMailUI is completely free to use as you wish."
 // Opera Wang, 2010/1/15
 // GPL V3 / MPL
+//Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 "use strict";
+var EXPORTED_SYMBOLS = ["ExpressionSearchChrome"];
 
-Cu.import("resource://gre/modules/Services.jsm");
-Cu.import("resource://gre/modules/Timer.jsm");
+//Cu.import("resource://gre/modules/Timer.jsm");
+var  {clearTimeout, setTimeout} = ChromeUtils.import("resource://gre/modules/Timer.jsm");
+var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+console.log("vor import ExpressionSearchLog");
+var  {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
+console.log("nach import ExpressionSearchLog", ExpressionSearchLog);
+var {ExpressionSearchaop} = ChromeUtils.import("chrome://expressionsearch/content/aop.js");
+ 
+
+var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/content/common.js");
+  
+
+
+
+    /* https://bugzilla.mozilla.org/show_bug.cgi?id=1383215#c24
+    There are two ways that we currently support packaging omnijar:
+    1) Separate JAR files for toolkit (GRE) content and app-specific content.
+    2) One JAR file containing both app-specific and toolkit content.
+    
+    Firefox uses the former (but used to use the latter), and Thunderbird uses the latter.
+    In case 2, resource:/// and resource://gre/ point to the same place, so it's technically possible to refer to app or toolkit content by two separate URLs,
+    and it's easy to carelessly use the wrong one. We had a bunch of these issues (especially with add-ons) when we switched layouts.
+    
+    But the code that's using resource://gre/ URLs for app content, or vice versa, is still technically wrong. */
+    
+    //Cu.import("chrome://expressionsearch/content/gmailuiParse.js");
+    var {ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens} = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
+
+    //.import("chrome://expressionsearch/content/aop.js");
+  //  //Cu.import("chrome://expressionsearch/content/common.js");
+ //   var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/content/common.js");
+    
+    // for hook functions for attachment search
+    var { SearchSpec } = ChromeUtils.import("resource:///modules/SearchSpec.jsm");
+      // general services
+      var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+      var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
+         // for create quick search folder
+//Cu.import("resource:///modules/virtualFolderWrapper.js"); // for VirtualFolderHelper
+    var { VirtualFolderHelper } = ChromeUtils.import(
+      "resource:///modules/VirtualFolderWrapper.jsm"
+    );
+    
+   
+   // Cu.import("resource:///modules/iteratorUtils.jsm");
+  //  Cu.import("resource:///modules/gloda/utils.js"); // for GlodaUtils.parseMailAddresses
+//  var {GlodaUtils} = ChromeUtils.import("resource:///modules/gloda/glodautils.jsm");
+  var { GlodaUtils } = ChromeUtils.import(
+    "resource:///modules/gloda/GlodaUtils.jsm"
+  );
+    //Cu.import("resource://gre/modules/AddonManager.jsm");
+    var { AddonManager } = ChromeUtils.import("resource://gre/modules/AddonManager.jsm");
+    // need to know whether gloda enabled
+  //!!!
+ //   Cu.import("resource:///modules/gloda/indexer.js");
+  
+ 
+// XXX we need to know whether the gloda indexer is enabled for upsell reasons,
+// but this should really just be exposed on the main Gloda public interface.
+var { GlodaIndexer } = ChromeUtils.import(
+  "resource:///modules/gloda/GlodaIndexer.jsm"
+);
+
+ 
+ 
+ 
+ // to call gloda search, actually no need
+    //Cu.import("resource:///modules/gloda/msg_search.js");
+    //if (!ExperssionSearchFilter  )     
+ //   console.log("vor  import ExperssionSearchFilter", ExperssionSearchFilter);
+ //  var {ExperssionSearchFilter} = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter1.js");
+ //   console.log("end importModulesit", ExperssionSearchFilter);
+ 
+
+
+
+
+
+
+
+
+
 
 const XULNS = 'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul';
 const statusbarIconID = "expression-search-status-bar";
-const statusbarIconSrc = 'chrome://expressionsearch/skin/statusbar_icon.png';
+const statusbarIconSrc = 'resource://expressionsearch/skin/statusbar_icon.png';
 const popupsetID = "expressionSearch-statusbar-popup";
 const contextMenuID = "expression-search-context-menu";
 const tooltipId = "expression-search-tooltip";
@@ -16,94 +98,106 @@ const oldAPI_61 = Services.vc.compare(Services.appinfo.platformVersion, '61.0a1'
 const oldAPI_65 = Services.vc.compare(Services.appinfo.platformVersion, '65.0a1') < 0;
 const oldAPI_67 = Services.vc.compare(Services.appinfo.platformVersion, '67.0a1') < 0;
 
-var EXPORTED_SYMBOLS = ["ExpressionSearchChrome"];
+//var EXPORTED_SYMBOLS = ["ExpressionSearchChrome"];
+let opstrings = Services.strings.createBundle('chrome://expressionsearch/locale/ExpressionSearch.properties');
 var ExpressionSearchChrome = {
   // if last key is Enter
   isEnter: 0,
   hookedGlobalFunctions: [],
   three_panes: [], // 3pane windows
-
+  
   needMoveId: "quick-filter-bar-main-bar",
   originalFilterId: "qfb-qs-textbox",
   textBoxDomId: "expression-search-textbox",
-  strBundle: Services.strings.createBundle('chrome://expressionsearch/locale/ExpressionSearch.properties'),
-
+  strBundle: opstrings,//Services.strings.createBundle('chrome://expressionsearch/locale/ExpressionSearch.properties'),
+  
   prefs: null, // preference object
   options: {}, // preference strings
 
   loaded: 0,
   init: function() {
-    Cu.import("chrome://expressionsearch/content/log.js"); // load log first
-    //ChomeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
+    debugger;
+  //  var  {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
     if ( this.loaded ) {
-
-		    try {
-		      ExpressionSearchLog.log("Expression Search: init...1", false, true);
-		      this.importModules();
-		      this.initPerf();
-		    } catch (err) {
-		      ExpressionSearchLog.logException(err);
-       	    }
-
       if ( !this.prefs && ExpressionSearchLog ) {
-        ExpressionSearchLog.log("Expression Search is now restartless!", 1);
+        ExpressionSearchLog.log("Expression Search is NOT restartless! Please restart Thunderbird!", 1);
       } else return;
     }
     this.loaded = 1;
     try {
-      ExpressionSearchLog.log("Expression Search: init...2", false, true);
+      ExpressionSearchLog.log("Expression Search: init...", false, true);
       this.importModules();
       this.initPerf();
     } catch (err) {
       ExpressionSearchLog.logException(err);
     }
   },
-
+  
   importModules: function() {
     /* https://bugzilla.mozilla.org/show_bug.cgi?id=1383215#c24
     There are two ways that we currently support packaging omnijar:
     1) Separate JAR files for toolkit (GRE) content and app-specific content.
     2) One JAR file containing both app-specific and toolkit content.
-
+    
     Firefox uses the former (but used to use the latter), and Thunderbird uses the latter.
     In case 2, resource:/// and resource://gre/ point to the same place, so it's technically possible to refer to app or toolkit content by two separate URLs,
     and it's easy to carelessly use the wrong one. We had a bunch of these issues (especially with add-ons) when we switched layouts.
-
+    
     But the code that's using resource://gre/ URLs for app content, or vice versa, is still technically wrong. */
+    
+    //Cu.import("chrome://expressionsearch/content/gmailuiParse.js");
+    //var {ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens} = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
 
-    Cu.import("chrome://expressionsearch/content/gmailuiParse.js");
-    Cu.import("chrome://expressionsearch/content/aop.js");
-    Cu.import("chrome://expressionsearch/content/common.js");
+    //.import("chrome://expressionsearch/content/aop.js");
+  //  //Cu.import("chrome://expressionsearch/content/common.js");
+  //  var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/content/common.js");
+    var {ExperssionSearchFilter} = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter.js");
+    /*  
     // for hook functions for attachment search
-    try {
-      Cu.import("resource:///modules/SearchSpec.jsm");
-    } catch (err) {
-      Cu.import("resource:///modules/searchSpec.js");
-    }
-    // general services
-    Cu.import("resource://gre/modules/Services.jsm");
-    try {
-      Cu.import("resource:///modules/MailServices.jsm");
-    } catch (err) {
-      Cu.import("resource:///modules/mailServices.js");
-    }
-    // for create quick search folder
-    Cu.import("resource:///modules/virtualFolderWrapper.js"); // for VirtualFolderHelper
-    Cu.import("resource:///modules/iteratorUtils.jsm");
-    Cu.import("resource:///modules/gloda/utils.js"); // for GlodaUtils.parseMailAddresses
-    Cu.import("resource://gre/modules/AddonManager.jsm");
+    var { SearchSpec } = ChromeUtils.import("resource:///modules/SearchSpec.jsm");
+      // general services
+      var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+      var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
+         // for create quick search folder
+//Cu.import("resource:///modules/virtualFolderWrapper.js"); // for VirtualFolderHelper
+    var { VirtualFolderHelper } = ChromeUtils.import(
+      "resource:///modules/VirtualFolderWrapper.jsm"
+    );
+    
+   
+   // Cu.import("resource:///modules/iteratorUtils.jsm");
+  //  Cu.import("resource:///modules/gloda/utils.js"); // for GlodaUtils.parseMailAddresses
+  var {GlodaUtils} = ChromeUtils.import("resource:///modules/gloda/glodautils.jsm");
+    //Cu.import("resource://gre/modules/AddonManager.jsm");
+    var { AddonManager } = ChromeUtils.import("resource://gre/modules/AddonManager.jsm");
     // need to know whether gloda enabled
-    Cu.import("resource:///modules/gloda/indexer.js");
-    // to call gloda search, actually no need
-    //Cu.import("resource:///modules/gloda/msg_search.js");
-    Cu.import("chrome://expressionsearch/content/ExpressionSearchFilter.js");
-  },
+  //!!!
+ //   Cu.import("resource:///modules/gloda/indexer.js");
+  
+ 
+// XXX we need to know whether the gloda indexer is enabled for upsell reasons,
+// but this should really just be exposed on the main Gloda public interface.
+var { GlodaIndexer } = ChromeUtils.import(
+  "resource:///modules/gloda/GlodaIndexer.jsm"
+);
 
+ 
+ 
+ 
+ // to call gloda search, actually no need
+    //Cu.import("resource:///modules/gloda/msg_search.js");
+    var {ExperssionSearchFilter} = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter.js");
+    console.log("end importModulesit");
+
+
+  */  
+  },
+    
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1415567 Remove {get,set}ComplexValue use of nsISupportsString in Thunderbird
   oldAPI_58: Services.vc.compare(Services.appinfo.platformVersion, '58') < 0,
   complexPrefs: ["c2s_regexpMatch", "c2s_regexpReplace", "installed_version", "virtual_folder_path"],
   mozIJSSubScriptLoader: Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Ci.mozIJSSubScriptLoader),
-
+  
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1413413 Remove support for extensions having their own prefs file
   setDefaultPrefs: function () {
     let branch = Services.prefs.getDefaultBranch("");
@@ -129,7 +223,7 @@ var ExpressionSearchChrome = {
       ExpressionSearchLog.logException(err);
     }
   },
-
+  
   initPerf: function() {
     this.setDefaultPrefs();
     this.prefs = Services.prefs.getBranch("extensions.expressionsearch.");
@@ -138,14 +232,13 @@ var ExpressionSearchChrome = {
      "results_label_size", "showbuttonlabel", "statusbar_info_showtime", "statusbar_info_hidetime", "c2s_enableCtrl", "c2s_enableShift", "c2s_enableCtrlReplace",
      "c2s_enableShiftReplace", "c2s_regexpMatch", "c2s_regexpReplace", "c2s_removeDomainName", "installed_version", "enable_statusbar_info", "enable_verbose_info"].forEach( function(key) {
       try {
-		ExpressionSearchLog.log("Expression Search: watch key:"+key, false, true);
         ExpressionSearchChrome.observe('', 'nsPref:changed', key); // we fake one
       } catch ( err ) {
         ExpressionSearchLog.logException(err);
       }
     });
   },
-
+  
   // get called when event occurs with our perf branch
   observe: function(subject, topic, data) {
     if (topic != "nsPref:changed") {
@@ -200,7 +293,7 @@ var ExpressionSearchChrome = {
         if ( !show  && !aFilterer.visible && hasFilter ) aFilterer.visible = true;
         return invocation.proceed();
     })[0] );
-
+    
     // onMakeActive && onTabSwitched: show or hide the buttons & search box
     win._expression_search.hookedFunctions.push( ExpressionSearchaop.around( {target: win.QuickFilterBarMuxer, method: 'onMakeActive'}, function(invocation) {
       let aFolderDisplay = invocation.arguments[0];
@@ -210,7 +303,7 @@ var ExpressionSearchChrome = {
       win.document.getElementById("qfb-results-label").style.visibility = appropriate ? 'visible': 'hidden';
       return invocation.proceed();
     })[0] );
-
+    
     win._expression_search.hookedFunctions.push( ExpressionSearchaop.before( {target: win.QuickFilterBarMuxer, method: 'onTabSwitched'}, function() {
       let filterer = this.maybeActiveFilterer;
       // filterer means if the tab can use quick filter
@@ -218,7 +311,7 @@ var ExpressionSearchChrome = {
       win.document.getElementById(ExpressionSearchChrome.needMoveId).style.visibility = filterer /*&& filterer.visible*/ ? 'visible': 'hidden';
       win.document.getElementById("qfb-results-label").style.visibility = filterer /*&& filterer.visible*/ ? 'visible': 'hidden';
     })[0] );
-
+    
     // hook _flattenGroupifyTerms to avoid being flatten
     if ( !ExpressionSearchChrome.hookedGlobalFunctions.length ) {
       ExpressionSearchChrome.hookedGlobalFunctions.push( ExpressionSearchaop.around( {target: SearchSpec.prototype, method: '_flattenGroupifyTerms'}, function(invocation) {
@@ -249,7 +342,7 @@ var ExpressionSearchChrome = {
         return outTerms;
       })[0] );
     }
-
+    
     // for results label to show correct colour by copy filterActive attribute from quick-filter-bar to qfb-results-label, and set colour in overlay.css
     win._expression_search.hookedFunctions.push( ExpressionSearchaop.after( {target: win.QuickFilterBarMuxer, method: 'reflectFiltererResults'}, function(result) {
       let qfb = win.document.getElementById("quick-filter-bar");
@@ -259,9 +352,9 @@ var ExpressionSearchChrome = {
       }
       return result;
     })[0] );
-
+   
   },
-
+  
   registerCallback(win) {
     this.three_panes.push(win);
   },
@@ -291,20 +384,20 @@ var ExpressionSearchChrome = {
     delete win._expression_search;
     delete win.ExpressionSearchChrome;
   },
-
+  
   cleanup: function() {
     this.prefs.removeObserver("", ExpressionSearchChrome);
     delete this.prefs;
     this.hookedGlobalFunctions.forEach( hooked => hooked.unweave() );
     ExpressionSearchLog.info("Expression Search: cleanup done");
   },
-
+  
   refreshFilterBar: function(win) {
     let document = win.document;
     let QuickFilterBarMuxer = win.QuickFilterBarMuxer;
     //thunderbird-private-tabmail-buttons
     //  qfb-show-filter-bar  : document.getElementById("qfb-show-filter-bar").checked = aFilterer.visible;
-
+  
     //quick-filter-bar
     //  quick-filter-bar-main-bar
     //    qfb-sticky qfb-filter-label [quick-filter-bar-collapsible-buttons] [100 results] [search filter]
@@ -312,7 +405,7 @@ var ExpressionSearchChrome = {
     //    quick-filter-bar-tab-bar : it's taG bar
     //    quick-filter-bar-filter-text-bar.collapsed=(aFilterValue.text == null);
     //QuickFilterState.visible
-
+    
     //QuickFilterBarMuxer
     //  onMakeActive for qfb-show-filter-bar visiable
     //  reflectFiltererState for qfb-show-filter-bar checked
@@ -360,11 +453,11 @@ var ExpressionSearchChrome = {
         spacer.style.flex = '1 2000 auto';
       }
     }
-
+    
     let resultsLabel = document.getElementById("qfb-results-label");
     if ( resultsLabel ) {
       if ( typeof(resultsLabel._saved_minWidth) == 'undefined' ) resultsLabel._saved_minWidth = resultsLabel.getAttribute('minwidth') || 1;
-      let layout = Services.prefs.getIntPref("mail.pane_config.dynamic");
+      let layout = Services.prefs.getIntPref("mail.pane_config.dynamic"); 
       let minWidth = ( this.options.results_label_size == 2 || ( this.options.results_label_size == 0 &&  this.options.move2bar == 0 && layout == win.kVerticalMailLayout ) ) ? 0 : resultsLabel._saved_minWidth;
       resultsLabel.setAttribute('minwidth', minWidth);
       if ( minWidth == 0 ) delete resultsLabel.style.width;
@@ -393,14 +486,14 @@ var ExpressionSearchChrome = {
           QuickFilterBarMuxer._minExpandedBarWidth = 0; // let it re-calculate the min expanded bar width because we changed the layout
           QuickFilterBarMuxer.onWindowResize.apply(QuickFilterBarMuxer);
         } else {
-          let quickFilterBarBox = document.getElementById("quick-filter-bar-main-bar");
+          let quickFilterBarBox = document.getElementById("quick-filter-bar-main-bar"); 
           if ( quickFilterBarBox && quickFilterBarBox.clientWidth < quickFilterBarBox.scrollWidth ) {
             QuickFilterBarMuxer.onOverflow.apply(QuickFilterBarMuxer);
           }
         }
       }
     }
-
+    
     let menu = document.getElementById(contextMenuID);
     if ( menu ) {
       for (let i = 0; i < menu.childNodes.length; i++ ) {
@@ -410,13 +503,13 @@ var ExpressionSearchChrome = {
       };
     }
   },
-
+  
   hideUpsellPanel: function(win) {
     let panel = win.document.getElementById("qfb-text-search-upsell");
     if ( panel.state == "open")
       panel.hidePopup();
   },
-
+  
   helpTimer: 0,
 
   showHideHelp: function(win, show, line1, line2, line3, line4) {
@@ -447,7 +540,7 @@ var ExpressionSearchChrome = {
       this.helpTimer = setTimeout( function(){ tooltip.hidePopup(); }, time2hide );
     }
   },
-
+  
   onTokenChange: function(event) {
     let searchValue = this.value;
     let start = searchValue.lastIndexOf(' ', this.selectionEnd > 0 ? this.selectionEnd - 1 : 0); // selectionEnd is index of the character after the selection
@@ -459,7 +552,7 @@ var ExpressionSearchChrome = {
     let win = ExpressionSearchChrome.getWinFromEvent(event);
     ExpressionSearchChrome.showHideHelp(win, 1, help.alias, help.info, help.matchString, term);
   },
-
+  
   delayedOnSearchKeyPress: function(event) {
     let me = ExpressionSearchChrome;
     let win = ExpressionSearchChrome.getWinFromEvent(event);
@@ -500,20 +593,21 @@ var ExpressionSearchChrome = {
     //  me.back2OriginalFolder(win);
     else me.onTokenChange.apply(this, [event]);
   },
-
+  
   onSearchKeyPress: function(event){
+    debugger;
     let self = this;
     // defer the call or this.value is still the old value, not updated with event.char yet
     setTimeout( function(){ ExpressionSearchChrome.delayedOnSearchKeyPress.call(self,event); }, 0);
   },
-
+  
   onSearchBarBlur: function(event) {
     let win = ExpressionSearchChrome.getWinFromEvent(event);
     ExpressionSearchChrome.hideUpsellPanel(win);
     ExpressionSearchChrome.isFocus = false;
     ExpressionSearchChrome.showHideHelp(win, false);
   },
-
+  
   getWinFromEvent: function(event) {
     try {
       return event.view || event.currentTarget.ownerDocument.defaultView;
@@ -521,7 +615,7 @@ var ExpressionSearchChrome = {
       ExpressionSearchLog.logException(err);
     }
   },
-
+  
   onSearchBarFocus: function(event) {
     let win = ExpressionSearchChrome.getWinFromEvent(event);
     let aNode = win.document.getElementById(ExpressionSearchChrome.textBoxDomId);
@@ -540,11 +634,13 @@ var ExpressionSearchChrome = {
       return;
     }
 
-    // TB69, for customElements.define("search-textbox", MozSearchTextbox, { extends: "textbox" });
-    let aNode = doc.createElementNS(XULNS, "textbox", {is: "search-textbox"});
+    // TB69, for    customElements.define("search-textbox", MozSearchTextbox, { extends: "textbox" });
+ //   let aNode = doc.createElementNS(XULNS, "search-textbox", {is: "search-textbox"});
+  //  let aNode = doc.createElementNS(XULNS, "search-textbox", {is: "search-textbox"});
+    let aNode = doc.createXULElement("search-textbox");//, {is: "search-textbox"});
     aNode.id = this.textBoxDomId;
     aNode.setAttribute("class", "searchBox");
-    aNode.setAttribute("type", "search");
+   // aNode.setAttribute("type", "search");
     aNode.setAttribute("emptytextbase", this.strBundle.GetStringFromName("textbox.emptyText.base"));
     aNode.setAttribute("timeout", 1000);
     aNode.setAttribute("maxlength", 2048);
@@ -553,7 +649,7 @@ var ExpressionSearchChrome = {
     aNode.setAttribute("minwidth", 280);
     oldTextbox.parentNode.insertBefore(aNode, oldTextbox.nextSibling);
     win._expression_search.createdElements.push(aNode);
-
+  
     aNode.addEventListener("keypress", this.onSearchKeyPress, true); // false will be after onComand, too late
     //aNode.addEventListener("input", this.onTokenChange, true); // input can't get arrow key change but can get update when click2search
     aNode.addEventListener("click", this.onTokenChange, true); // to track selectEnd change
@@ -561,14 +657,14 @@ var ExpressionSearchChrome = {
     aNode.addEventListener("focus", this.onSearchBarFocus, true);
     this.setSearchTimeout(win);
   },
-
+  
   setSearchTimeout: function(win) {
     let doc = win.document;
     let aNode = doc.getElementById(this.textBoxDomId);
     if ( !aNode ) return;
     aNode.timeout = this.options.search_timeout || 1000000000;
   },
-
+  
   back2OriginalFolder: function(win) {
     try {
       if ( typeof(win._expression_search.originalURI) == 'undefined' ) return;
@@ -576,7 +672,7 @@ var ExpressionSearchChrome = {
     } catch (err) {
     }
   },
-
+  
   // not works well for complex searchTerms. But it's for all folders.
   createQuickFolder: function(win, searchTerms) {
     const nsMsgFolderFlags = Ci.nsMsgFolderFlags;
@@ -598,7 +694,7 @@ var ExpressionSearchChrome = {
       return;
     }
     let QSFolderURI = targetFolderParent.URI + "/" + QSFolderName;
-
+    
     if ( !targetFolderParent.containsChildNamed(QSFolderName) || ! this.options.reuse_existing_folder ) {
       for (let folder of fixIterator(rootFolder.descendants, Ci.nsIMsgFolder)) {
         // only add non-virtual non-news folders
@@ -676,7 +772,7 @@ var ExpressionSearchChrome = {
     }
     ExpressionSearchChrome.isEnter = false;
   },
-
+  
   calculateResult: function(e) {
     if (e.kind == 'op') {
       if (e.tok == '+' || (e.right != undefined && e.tok == '-') || e.tok == '*' || e.tok == '/') {
@@ -724,7 +820,7 @@ var ExpressionSearchChrome = {
     aNode.value = lhs + " = " + rhs;
     aNode.setSelectionRange(lhs.length, lhs.length + rhs.length + 3); // TODO: not work?
   },
-
+  
   //Check conditions for search: corresponding modifier is hold on or middle button is pressed
   CheckClickSearchEvent: function( event ) {
     // event.button: 0:left, 1:middle, 2:right
@@ -733,8 +829,8 @@ var ExpressionSearchChrome = {
     if ( ExpressionSearchChrome.options.c2s_enableShift && event.shiftKey ) return true;
     return false;
   },
-
-  //Replace string using user-defined regexp. If not match, return original strings.
+  
+  //Replace string using user-defined regexp. If not match, return original strings. 
   //If multiple matches, return all replaces, concatinated with OR operator
   RegexpReplaceString : function( str ) {
     if ( ExpressionSearchChrome.options.c2s_regexpMatch.length == 0 ) return str;
@@ -853,7 +949,7 @@ var ExpressionSearchChrome = {
     aNode._fireCommand(aNode);
     return;
   },
-
+  
   firstRunAction: function() {
     let anchor = '';
     if ( this.options.installed_version != "0.1" ) anchor = '#version_history'; // this is an update
@@ -902,6 +998,7 @@ var ExpressionSearchChrome = {
       let description = doc.createElementNS(XULNS, "description");
       description.id = tooltipId + "-line" + i;
       description.setAttribute('class', 'tooltip-' + classes[i-1]);
+      //debugger;
       if ( i == 1 || i == 2) {
         description.textContent = this.strBundle.GetStringFromName("info.helpLine"+i);
       } else {
@@ -955,7 +1052,7 @@ var ExpressionSearchChrome = {
       win._expression_search.createdElements.push(statusbarPanel);
     }
   },
-
+  
   loadInto3pane: function(win) {
     let me = ExpressionSearchChrome;
     try {
@@ -1007,7 +1104,7 @@ var ExpressionSearchChrome = {
             me.firstRunAction.apply(me);
           });
         } else {
-          AddonManager.getAddonByID("{03EF8A6E-C972-488f-92FA-98ABC2C9F8B9}").then(addon => {
+          AddonManager.getAddonByID("expressionsearch@opto.one").then(addon => {
             me.options.current_version = addon.version;
             me.firstRunAction.apply(me);
           });
@@ -1025,7 +1122,7 @@ var ExpressionSearchChrome = {
     aWindow.removeEventListener("unload", ExpressionSearchChrome.onUnLoad, false);
     ExpressionSearchChrome.unLoad(aWindow);
   },
-
+  
   setFocus: function(win) {
     if ( ExpressionSearchChrome.options.move2bar==0 && !QuickFilterBarMuxer.activeFilterer.visible )
       QuickFilterBarMuxer._showFilterBar(true);
@@ -1063,18 +1160,20 @@ var ExpressionSearchChrome = {
     let menupopup = doc.createElementNS(XULNS, "menupopup");
     let menuGroupName = 'expression_search-status_menu';
     menupopup.id = contextMenuID;
-    [
+    [ 
       ["about:config", "", function(){ ExpressionSearchCommon.loadURL('about:config'); }],
       ["about:crashes", "", function(){ ExpressionSearchCommon.loadTab('about:crashes'); }],
       ["about:memory", "", function(){ ExpressionSearchCommon.loadURL('about:memory?verbose'); }],
       [''], // items before seprator and the seprator it self will only shown if verbose
-      [this.strBundle.GetStringFromName("dialog.settings"), "chrome://messenger/skin/accountcentral/account-settings.png", function(){ ExpressionSearchCommon.loadURL('chrome://expressionsearch/content/esPrefDialog.xul'); }],
+      [this.strBundle.GetStringFromName("dialog.settings"), "chrome://messenger/skin/accountcentral/account-settings.png", function(){ ExpressionSearchCommon.loadURL('chrome://expressionsearch/content/esPrefDialog.xhtml'); }],
       [this.strBundle.GetStringFromName("option.help"), "chrome://global/skin/icons/question-64.png", function(){ ExpressionSearchCommon.loadURL('expressionsearch.helpfile', 'expressionsearch.help'); }],
       [this.strBundle.GetStringFromName("donate.label"), this.strBundle.GetStringFromName("donate.image"), function(){ ExpressionSearchCommon.loadDonate(ExpressionSearchChrome.strBundle.GetStringFromName("donate.pay")); }],
-      ["Addon @ Mozilla", "chrome://mozapps/skin/extensions/extensionGeneric.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://addons.thunderbird.net/en-US/thunderbird/addon/gmailui"); }],
-      ["Addon @ GitHub", "chrome://awsomeAutoArchive/content/github.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/wangvisual/expression-search"); }],
-      ["Report Bug", "chrome://global/skin/icons/information-32.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/wangvisual/expression-search/issues"); }],
-      [this.strBundle.GetStringFromName("about.about"), "chrome://expressionsearch/skin/statusbar_icon.png", function(){ ExpressionSearchCommon.loadURL('chrome://expressionsearch/content/about.xul'); }],
+ //     ["Addon @ Mozilla", "chrome://mozapps/skin/extensions/extensionGeneric.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://addons.thunderbird.net/en-US/thunderbird/addon/gmailui"); }],
+ //     ["Addon @ GitHub", "chrome://awsomeAutoArchive/content/github.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/opto/expression-search-NG"); }],
+      ["Addon @ GitHub", "chrome://mozapps/skin/extensions/extensionGeneric.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/opto/expression-search-NG"); }],
+      ["Report Bug", "chrome://global/skin/icons/information-32.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/opto/expression-search-NG/issues"); }],
+      [this.strBundle.GetStringFromName("about.about"), "resource://expressionsearch/skin/statusbar_icon.png", function(){ ExpressionSearchCommon.loadURL('chrome://expressionsearch/content/about.xhtml'); }],
+//      [this.strBundle.GetStringFromName("about.about"), "resource://expressionsearch/skin/statusbar_icon.png", function(){ ExpressionSearchCommon.loadURL('chrome://messenger/content/SearchDialog.xhtml'); }],
     ].forEach( function(menu) {
       ExpressionSearchChrome.addMenuItem(menu, doc, menupopup);
     } );

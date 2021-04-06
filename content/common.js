@@ -1,19 +1,16 @@
 // Common functions
 // MPL/GPL
 // Opera.Wang 2011/03/21
+//Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
+
 "use strict";
-Cu.import("resource://gre/modules/Services.jsm");
-try {
-  Cu.import("resource:///modules/MailServices.jsm");
-} catch (err) {
-  Cu.import("resource:///modules/mailServices.js");
-}
-try {
-  Cu.import("resource:///modules/MailUtils.jsm");
-} catch (err) {
-  Cu.import("resource:///modules/MailUtils.js");
-}
+var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
+var { MailUtils } = ChromeUtils.import("resource:///modules/MailUtils.jsm");
+const ADDON_ID = "expressionsearch@opto.one";
 var EXPORTED_SYMBOLS = ["ExpressionSearchCommon"];
+
+
 var ExpressionSearchCommon = {
   strings: Services.strings.createBundle('chrome://expressionsearch/locale/ExpressionSearch.properties'),
   translateURL: function(url,anchor) {
@@ -27,7 +24,11 @@ var ExpressionSearchCommon = {
     }
   },
   loadURL: function(url, name = null, additional = '') { // not support html anchor
-    let win = Services.ww.openWindow(null, ExpressionSearchCommon.translateURL(url), name, "chrome=no,menubar=no,status=no,location=no,resizable,scrollbars,centerscreen" + additional, null);
+    let newURL = ExpressionSearchCommon.translateURL(url);
+    if (name == null) name = "";
+    const kFeatures = "chrome,centerscreen,modal,titlebar";
+    //let params = "chrome=no,menubar=no,status=no,location=no,resizable,scrollbars,centerscreen" + additional;
+    let win = Services.ww.openWindow(null, newURL, name, kFeatures, null);
   },
   showModalDialog: function(win, url) {
       // open is more standard compare with openDialog
@@ -59,14 +60,24 @@ var ExpressionSearchCommon = {
   loadUseProtocol: function(url) {
     Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService).loadURI(Services.io.newURI(url, null, null), null);
   },
-  loadDonate: function(pay) {
-    let url = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=893LVBYFXCUP4&lc=US&item_name=Expression%20Search&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest";
-    if ( typeof(pay) != 'undefined' ) {
-      if ( pay == 'alipay' ) return this.loadTab( {type: 'contentTab', contentPage: "chrome://expressionsearch/content/qr-alipay.png"});
-      if ( pay == 'paypal' ) url = "https://www.paypal.me/operawang/4.99USD";
-      if ( pay == 'mozilla' ) url = "https://addons.thunderbird.net/thunderbird/addon/gmailui"; // addon home page
+  openLinkExternally: function(url) {
+    let uri = url;
+    if (!(uri instanceof Ci.nsIURI)) {
+      uri = Services.io.newURI(url);
     }
-    ExpressionSearchCommon.loadUseProtocol(url);
+    
+    Cc["@mozilla.org/uriloader/external-protocol-service;1"]
+      .getService(Ci.nsIExternalProtocolService)
+      .loadURI(uri);
+  },
+loadDonate: function(pay) {
+    let url = "";//"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=893LVBYFXCUP4&lc=US&item_name=Expression%20Search&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest";
+    if ( typeof(pay) != 'undefined' ) {
+      if ( pay == 'alipay' ) url = "https://www.paypal.com/donate?hosted_button_id=EMVA9S5N54UEW";  //return this.loadTab( {type: 'contentTab', contentPage: "chrome://expressionsearch/content/qr-alipay.png"});
+      if ( pay == 'paypal' ) url = "https://www.paypal.com/donate?hosted_button_id=EMVA9S5N54UEW";
+      if ( pay == 'mozilla' ) url = "https://www.paypal.com/donate?hosted_button_id=EMVA9S5N54UEW";//"https://addons.thunderbird.net/thunderbird/addon/expressionsearch-NG"; // addon home page
+    }
+    ExpressionSearchCommon.openLinkExternally(url);
   },
   sendEmailWithTB: function(url) {
       MailServices.compose.OpenComposeWindowWithURI(null, Services.io.newURI(url, null, null));

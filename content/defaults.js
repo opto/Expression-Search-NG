@@ -1,4 +1,4 @@
-pref("extensions.expressionsearch.installed_version", "0.1");
+pref("extensions.expressionsearch.installed_version", "2.4beta");
 pref("extensions.expressionsearch.hide_normal_filer", true);
 pref("extensions.expressionsearch.results_label_size", 0); // 0: hide when on filter bar and vertical layout , 1: show 2: hide
 pref("extensions.expressionsearch.act_as_normal_filter", true);

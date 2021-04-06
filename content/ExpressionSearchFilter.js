@@ -2,32 +2,53 @@
 // GPL V3 / MPL
 // Expression Search Filter
 // MessageTextFilter didn't want me to extend it much, so I have to define mine.
+//Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 "use strict";
 
 var EXPORTED_SYMBOLS = ["ExperssionSearchFilter"];
 
+var { ExtensionCommon } = ChromeUtils.import("resource://gre/modules/ExtensionCommon.jsm");
+
+var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
+var ESextension = ExtensionParent.GlobalManager.getExtension("expressionsearch@opto.one");
+console.log("File", ESextension.rootURI.resolve("content/es.js"), ExpressionSearchChrome);
+//var { ExpressionSearchChrome } = ChromeUtils.import(ESextension.rootURI.resolve("content/es1.js"));
+
+
 const { nsMsgSearchAttrib: nsMsgSearchAttrib, nsMsgSearchOp: nsMsgSearchOp, nsMsgMessageFlags: nsMsgMessageFlags, nsMsgSearchScope: nsMsgSearchScope } = Ci;
-Cu.import("chrome://expressionsearch/content/es.js");
-Cu.import("chrome://expressionsearch/content/log.js");
-try {
-  Cu.import("resource:///modules/QuickFilterManager.jsm");
-} catch (err) {
-  Cu.import("resource:///modules/quickFilterManager.js");
-}
-Cu.import("chrome://expressionsearch/content/gmailuiParse.js");
-Cu.import("resource://gre/modules/Services.jsm");
-try {
-  Cu.import("resource:///modules/MailServices.jsm");
-} catch (err) {
-  Cu.import("resource:///modules/mailServices.js");
-}
-Cu.import("resource:///modules/gloda/utils.js"); // for GlodaUtils.deMime and parseMailAddresses
-Cu.import("resource:///modules/gloda/indexer.js");
-Cu.import("resource:///modules/gloda/mimemsg.js"); // for check attachment name, https://developer.mozilla.org/en/Extensions/Thunderbird/HowTos/Common_Thunderbird_Use_Cases/View_Message
-Cu.import("resource://gre/modules/AppConstants.jsm");
-Cu.import("resource:///modules/mimeParser.jsm");
-Cu.import("resource://gre/modules/NetUtil.jsm"); // for readInputStreamToString
-Cu.import("resource:///modules/jsmime.jsm"); // JSMIME
+//if (!ExpressionSearchChrome  )  
+var  {ExpressionSearchChrome} =  ChromeUtils.import("chrome://expressionsearch/content/es.js");
+console.log("ExpressionSearchChrome",ExpressionSearchChrome);
+var {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js");
+var {
+  MessageTextFilter,
+  QuickFilterManager,
+  QuickFilterSearchListener,
+  QuickFilterState,
+} = ChromeUtils.import("resource:///modules/QuickFilterManager.jsm");
+
+var  {ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens}  = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
+var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
+var {GlodaUtils} = ChromeUtils.import("resource:///modules/gloda/GlodaUtils.jsm");// for GlodaUtils.deMime and parseMailAddresses
+//Cu.import("resource:///modules/gloda/indexer.js");
+
+// XXX we need to know whether the gloda indexer is enabled for upsell reasons,
+// but this should really just be exposed on the main Gloda public interface.
+var { GlodaIndexer } = ChromeUtils.import(
+  "resource:///modules/gloda/GlodaIndexer.jsm"
+);
+
+
+//!Cu.import("resource:///modules/gloda/MimeMessage.jsm"); // for check attachment name, https://developer.mozilla.org/en/Extensions/Thunderbird/HowTos/Common_Thunderbird_Use_Cases/View_Message
+var {  MimeMessage } = ChromeUtils.import(
+  "resource:///modules/gloda/MimeMessage.jsm"
+);
+
+var { AppConstants } = ChromeUtils.import("resource://gre/modules/AppConstants.jsm");
+var { MimeParser } = ChromeUtils.import("resource:///modules/mimeParser.jsm");
+var { NetUtil } = ChromeUtils.import("resource://gre/modules/NetUtil.jsm"); // for readInputStreamToString
+var { jsmime } = ChromeUtils.import("resource:///modules/jsmime.jsm"); // JSMIME
 
 let platformIsMac = ( AppConstants.platform == "macosx" ? true : false );
 let strings = Services.strings.createBundle('chrome://expressionsearch/locale/ExpressionSearch.properties');
@@ -472,8 +493,11 @@ let ExperssionSearchFilter = {
       desiredValue = aFilterValue.text;
     if ( aNode.value != desiredValue && !aFromPFP )
       aNode.value = desiredValue;
+//      console.log("ExpressionSearchChrome",ExpressionSearchChrome);
+//!!
+//!!var  {ExpressionSearchChrome} =  ChromeUtils.import("chrome://expressionsearch/content/es.js");
 
-    ExpressionSearchChrome.showHideHelp(aDocument.defaultView, false);
+ExpressionSearchChrome.showHideHelp(aDocument.defaultView, false);
     
     let total = Object.keys(haveBodyMapping).length;
     if ( total && aNode.value != '' ) {

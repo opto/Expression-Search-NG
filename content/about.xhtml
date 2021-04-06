@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://expressionsearch/skin/overlay.css" type="text/css"?>
+<?xml-stylesheet href="resource://expressionsearch/skin/overlay.css" type="text/css"?>
 
 <!DOCTYPE dialog SYSTEM "chrome://expressionsearch/locale/ExpressionSearch.dtd">
 
-<dialog title="&about.about; Expression Search" orient="vertical" autostretch="always" onload="sizeToContent()" buttons="accept" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<dialog id = "aboutID" title="&about.about; Expression Search" orient="vertical" autostretch="always" onload="sizeToContent()" buttons="accept" 
+
+
+xmlns:html="http://www.w3.org/1999/xhtml"
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+
+
+
+>
   <script type="application/x-javascript" src="chrome://expressionsearch/content/common.js"/>
+
   <stringbundleset id="stringbundleset">
     <stringbundle src="chrome://expressionsearch/locale/ExpressionSearch.properties" id="your-extension-strings" />
   </stringbundleset>
+
   <groupbox align="center" orient="horizontal">
     <vbox>
       <text class='abouthead' value="&about.author;"/>
@@ -21,4 +31,5 @@
       <text class='textlink' value="&about.help;" onclick="ExpressionSearchCommon.loadURL('expressionsearch.helpfile', 'expressionsearch.help');"/>
     </vbox>
   </groupbox>
+
 </dialog>

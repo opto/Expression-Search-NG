@@ -13,11 +13,12 @@
     delete all white spaces including ' ', \t etc.
     Using ExpressionSearchTokens
 */
+//Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 "use strict";
 var EXPORTED_SYMBOLS = ["ExpressionSearchComputeExpression", "ExpressionSearchExprToStringInfix", "ExpressionSearchTokens"];
 
-Cu.import("chrome://expressionsearch/content/log.js");
-Cu.import("resource://gre/modules/Services.jsm");
+var {ExpressionSearchLog} = ChromeUtils.import("chrome://expressionsearch/content/log.js");
+var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
 let strings = Services.strings.createBundle('chrome://expressionsearch/locale/ExpressionSearch.properties');
 var ExpressionSearchTokens = {
   tokenDict: { from: ['f'], fromre: ['fr'], to: ['t', 'toorcc'], tore: ['tr'], tonocc: ['tn'], cc: ['c'], bcc: ['bc'], only: ['o'], subject: ['s'], size: ['si', 'larger'], smaller: ['sm'],
