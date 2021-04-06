@@ -516,13 +516,10 @@ Tom Zhu - Suggest for Enter to focus message pane, and validations before releas
 </li></ul>
 
 <h3>Feedback, Suggestions, and on-going Development</h3>
-<p>Klaus Buecher/Opto's Home Page for TB 78+: <a href='https://github.com/opto/expression-search-NG'>expression-search-NG</a>
-<p>Opera Wang's Home Page (TB 60): <a href='https://github.com/wangvisual/expression-search'>expression-search, not in active development</a>
-<p>Ken Mixters Home Page: <a href='http://sites.google.com/site/kmixter/gmailui'>GMailUI, pre 2005</a>
-    <!--
-  <p>Please send email to <a href='mailto:Opera.Wang+es@gmail.com'>Opera.Wang+es@gmail.com</a> for feedback, suggestions etc</p>
-<p><a href='https://twitter.com/operawang'>Twitter</a> or <a href='http://weibo.com/operawang'>Weibo</a></p>
-https://github.com/wangvisual/expression-search-->
+<p>Klaus Buecher/Opto's Home Page for TB 78+: <a href='https://github.com/opto/expression-search-NG'>expression-search-NG</a> </p>
+<p>Opera Wang's Home Page (TB 60): <a href='https://github.com/wangvisual/expression-search'>expression-search</a>, not in active development      </p>
+<p>Ken Mixters Home Page: <a href='http://sites.google.com/site/kmixter/gmailui'>GMailUI</a>, pre 2005    </p>
+
 <p>&nbsp;</p>
 </div>
 </body>
