@@ -1,5 +1,53 @@
 //Added for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 //License: MPL 2
+
+
+
+var url = messenger.runtime.getURL("content/help_bckg.html");
+//await browser.tabs.create({ url });
+//messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
+
+messenger.BootstrapLoader.onNotifyBackground.addListener(async (info) => {
+   switch (info.command) {
+     case "showHelp":
+       //do something
+       console.log("showHelp");
+       messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
+
+       //let rv = await doSomething();
+       return;// rv;
+       break;
+   }
+ });
+
+ messenger.runtime.onInstalled.addListener(async ({ reason, temporary }) => {
+   if (temporary) {
+     // skip during development
+  //   return; 
+   }
+   
+   switch (reason) {
+     case "install":
+     {
+//       const url = messenger.runtime.getURL("popup/installed.html");
+//       await messenger.windows.create({ url, type: "popup", height: 680, width: 900, });
+         await messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
+      }
+     break;
+     
+     case "update":
+     {
+//       const url = messenger.runtime.getURL("popup/update.html");
+       // const url = messenger.runtime.getURL("popup/installed.html");
+       await messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
+       //       await messenger.windows.create({ url, type: "popup", height: 680, width: 990, });
+     }
+     break;
+   }
+ });
+ 
+ 
+
 messenger.BootstrapLoader.registerChromeUrl([ 
     ["content", "expressionsearch",           "content/"],
     ["locale",  "expressionsearch", "en-US",  "locale/en-US/"],
@@ -17,10 +65,6 @@ messenger.BootstrapLoader.registerChromeUrl([
 
 
 
-
-let url = messenger.runtime.getURL("content/help_bckg.html");
-//await browser.tabs.create({ url });
-messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
 
 
 messenger.BootstrapLoader.registerDefaultPrefs("content/defaults.js");

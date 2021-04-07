@@ -10,6 +10,9 @@ var { MailUtils } = ChromeUtils.import("resource:///modules/MailUtils.jsm");
 const ADDON_ID = "expressionsearch@opto.one";
 var EXPORTED_SYMBOLS = ["ExpressionSearchCommon"];
 
+//var {notifyTools}  =  ChromeUtils.import("chrome://expressionsearch/content/notifyTools.js");
+
+
 
 var ExpressionSearchCommon = {
   strings: Services.strings.createBundle('chrome://expressionsearch/locale/ExpressionSearch.properties'),
@@ -23,7 +26,35 @@ var ExpressionSearchCommon = {
       return url+anchor;
     }
   },
-  loadURL: function(url, name = null, additional = '') { // not support html anchor
+
+
+  notifyBackground: function (data) {
+    if (ADDON_ID == "") {
+      throw new Error("notifyTools: ADDON_ID is empty!");
+    }
+    return new Promise((resolve) => {
+      Services.obs.notifyObservers(
+        { data, resolve },
+        "NotifyBackgroundObserver",
+        ADDON_ID
+      );
+    });
+  },
+ 
+
+  showHelpFile: function(url, name = null, additional = '') { // not support html anchor
+    ExpressionSearchCommon.notifyBackground({command: "showHelp"});//.then((data) => {
+    //  console.log(data);
+    //});
+/*
+      let newURL = ExpressionSearchCommon.translateURL(url);
+    if (name == null) name = "";
+    const kFeatures = "chrome,centerscreen,modal,titlebar";
+    //let params = "chrome=no,menubar=no,status=no,location=no,resizable,scrollbars,centerscreen" + additional;
+    let win = Services.ww.openWindow(null, newURL, name, kFeatures, null);
+  */
+ },
+ loadURL: function(url, name = null, additional = '') { // not support html anchor
     let newURL = ExpressionSearchCommon.translateURL(url);
     if (name == null) name = "";
     const kFeatures = "chrome,centerscreen,modal,titlebar";

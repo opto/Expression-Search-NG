@@ -22,6 +22,7 @@ const targetWindows = [ "mail:3pane", "mailnews:virtualFolderList" ];
 const observeEvent = "xul-window-registered";
 
 function loadIntoWindow(window) {
+  console.log("loadIntoWindow");
   if ( !window ) return; // windows is the global host context
   let document = window.document; // XULDocument
   let type = document.documentElement.getAttribute('windowtype'); // documentElement maybe 'messengerWindow' / 'addressbookWindow'
@@ -70,15 +71,20 @@ function startup(aData, aReason) {
  
 function shutdown(aData, aReason) {
   // When the application is shutting down we normally don't have to clean up any UI changes made
+  console.log("bootstrap shutdown", (aReason == APP_SHUTDOWN));
   if (aReason == APP_SHUTDOWN) return;
 
   try {
     if ( sss.sheetRegistered(userCSS, sss.USER_SHEET) ) sss.unregisterSheet(userCSS, sss.USER_SHEET);
   } catch (err) {Cu.reportError(err);}
-  
+ 
+  try {
+    Services.obs.removeObserver(windowListener, observeEvent);
+  } catch (err) {Cu.reportError(err);}
+ 
+
   try {
     Services.obs.notifyObservers(null, "startupcache-invalidate", null); //ADDON_DISABLE ADDON_UNINSTALL ADDON_UPGRADE ADDON_DOWNGRADE
-    Services.obs.removeObserver(windowListener, observeEvent);
     // Unload from any existing windows
     let windows = Services.wm.getEnumerator(null);
     while (windows.hasMoreElements()) {

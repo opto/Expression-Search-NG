@@ -15,10 +15,12 @@ var {console} = ChromeUtils.import("resource://gre/modules/Console.jsm", {});
 // for Error Console in Gecko > 44
 //!let {HUDService} = require("devtools/client/webconsole/hudservice");
 
-let popupWins = {};
+//let popupWins = {};
 const popupImage = "resource://expressionsearch/skin/statusbar_icon.png";
 var EXPORTED_SYMBOLS = ["ExpressionSearchLog"];
 let ExpressionSearchLog = {
+  popupWins : {},
+  
   popupDelay: null,
   setPopupDelay: function(delay) {
     this.popupDelay = delay * 1000; // input unit is seconds, internal using ms
@@ -28,7 +30,7 @@ let ExpressionSearchLog = {
       if ( topic == 'alertclickcallback' ) { // or alertfinished / alertshow(Gecko22)
 //!        HUDService.openBrowserConsoleOrFocus();
       } else if ( topic == 'alertfinished' ) {
-        delete popupWins[cookie];
+        delete ExpressionSearchLog.popupWins[cookie];
       }
     }
   },
@@ -81,7 +83,7 @@ let ExpressionSearchLog = {
         else variant.setFromVariant(arg);
         return variant;
       } ), Ci.nsIMutableArray));
-    popupWins[cookie] = Cu.getWeakReference(win);
+      ExpressionSearchLog.popupWins[cookie] = Cu.getWeakReference(win);
     // sometimes it's too late to set win.arguments here when the xul window is reused.
     // win.arguments = args;
     let popupLoad = function() {
@@ -110,12 +112,12 @@ let ExpressionSearchLog = {
   cleanup: function() {
     try {
       this.info("Log cleanup");
-      for ( let cookie in popupWins ) {
-        let newwin = popupWins[cookie].get();
+      for ( let cookie in ExpressionSearchLog.popupWins ) {
+        let newwin = ExpressionSearchLog.popupWins[cookie].get();
         this.info("close alert window:" + cookie);
         if ( newwin && newwin.document && !newwin.closed ) newwin.close();
       };
-      popupWins = {};
+      ExpressionSearchLog.popupWins = {};
       this.info("Log cleanup done");
     } catch(err){}
   },

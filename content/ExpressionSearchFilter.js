@@ -11,7 +11,7 @@ var { ExtensionCommon } = ChromeUtils.import("resource://gre/modules/ExtensionCo
 
 var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
 var ESextension = ExtensionParent.GlobalManager.getExtension("expressionsearch@opto.one");
-console.log("File", ESextension.rootURI.resolve("content/es.js"), ExpressionSearchChrome);
+//console.log("File", ESextension.rootURI.resolve("content/es.js"));//, ExpressionSearchChrome);
 //var { ExpressionSearchChrome } = ChromeUtils.import(ESextension.rootURI.resolve("content/es1.js"));
 
 

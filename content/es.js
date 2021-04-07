@@ -117,8 +117,9 @@ var ExpressionSearchChrome = {
   loaded: 0,
   init: function() {
     debugger;
+    console.log("ExpressionSearchChrome init");
   //  var  {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
-    if ( this.loaded ) {
+    if ( !this.loaded ) {
       if ( !this.prefs && ExpressionSearchLog ) {
         ExpressionSearchLog.log("Expression Search is NOT restartless! Please restart Thunderbird!", 1);
       } else return;
@@ -134,6 +135,7 @@ var ExpressionSearchChrome = {
   },
   
   importModules: function() {
+    console.log("ExpressionSearchChrome importModules");
     /* https://bugzilla.mozilla.org/show_bug.cgi?id=1383215#c24
     There are two ways that we currently support packaging omnijar:
     1) Separate JAR files for toolkit (GRE) content and app-specific content.
@@ -151,8 +153,13 @@ var ExpressionSearchChrome = {
     //.import("chrome://expressionsearch/content/aop.js");
   //  //Cu.import("chrome://expressionsearch/content/common.js");
   //  var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/content/common.js");
-    var {ExperssionSearchFilter} = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter.js");
-    /*  
+  // too late var  {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
+  //console.log("nach import ExpressionSearchLog", ExpressionSearchLog);
+  console.log(this.loaded);
+  //if (this.loaded==0) ExpressionSearchLog.log("Expression Search is NOT restartless! Please restart Thunderbird!", 1);
+  //this.loaded=1;
+  var {ExperssionSearchFilter} = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter.js");
+  /*  
     // for hook functions for attachment search
     var { SearchSpec } = ChromeUtils.import("resource:///modules/SearchSpec.jsm");
       // general services
@@ -360,6 +367,8 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
 
   unLoad: function(win) {
+    console.log("ExpressionSearchChrome unLoad");
+
     if ( typeof(win._expression_search) == 'undefined' ) return;
     ExpressionSearchLog.info("Expression Search: unload...");
     let me = ExpressionSearchChrome;
@@ -386,6 +395,7 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
   
   cleanup: function() {
+    console.log("ExpressionSearchChrome cleanup");
     this.prefs.removeObserver("", ExpressionSearchChrome);
     delete this.prefs;
     this.hookedGlobalFunctions.forEach( hooked => hooked.unweave() );
@@ -1166,11 +1176,11 @@ var { GlodaIndexer } = ChromeUtils.import(
       ["about:memory", "", function(){ ExpressionSearchCommon.loadURL('about:memory?verbose'); }],
       [''], // items before seprator and the seprator it self will only shown if verbose
       [this.strBundle.GetStringFromName("dialog.settings"), "chrome://messenger/skin/accountcentral/account-settings.png", function(){ ExpressionSearchCommon.loadURL('chrome://expressionsearch/content/esPrefDialog.xhtml'); }],
-      [this.strBundle.GetStringFromName("option.help"), "chrome://global/skin/icons/question-64.png", function(){ ExpressionSearchCommon.loadURL('expressionsearch.helpfile', 'expressionsearch.help'); }],
+      [this.strBundle.GetStringFromName("option.help"), "chrome://global/skin/icons/question-64.png", function(){ ExpressionSearchCommon.showHelpFile('expressionsearch.helpfile', 'expressionsearch.help'); }],
       [this.strBundle.GetStringFromName("donate.label"), this.strBundle.GetStringFromName("donate.image"), function(){ ExpressionSearchCommon.loadDonate(ExpressionSearchChrome.strBundle.GetStringFromName("donate.pay")); }],
  //     ["Addon @ Mozilla", "chrome://mozapps/skin/extensions/extensionGeneric.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://addons.thunderbird.net/en-US/thunderbird/addon/gmailui"); }],
  //     ["Addon @ GitHub", "chrome://awsomeAutoArchive/content/github.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/opto/expression-search-NG"); }],
-      ["Addon @ GitHub", "chrome://mozapps/skin/extensions/extensionGeneric.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/opto/expression-search-NG"); }],
+ //     ["Addon @ GitHub", "chrome://mozapps/skin/extensions/extensionGeneric.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/opto/expression-search-NG"); }],
       ["Report Bug", "chrome://global/skin/icons/information-32.png", function(){ ExpressionSearchCommon.loadUseProtocol("https://github.com/opto/expression-search-NG/issues"); }],
       [this.strBundle.GetStringFromName("about.about"), "resource://expressionsearch/skin/statusbar_icon.png", function(){ ExpressionSearchCommon.loadURL('chrome://expressionsearch/content/about.xhtml'); }],
 //      [this.strBundle.GetStringFromName("about.about"), "resource://expressionsearch/skin/statusbar_icon.png", function(){ ExpressionSearchCommon.loadURL('chrome://messenger/content/SearchDialog.xhtml'); }],
