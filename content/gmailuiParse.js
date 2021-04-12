@@ -65,7 +65,7 @@ var ExpressionSearchTokens = {
       } );
     }
     this.allTokens = this.allTokenArray.join('|');
-  },
+  }
 };
 ExpressionSearchTokens.init.apply(ExpressionSearchTokens);
 

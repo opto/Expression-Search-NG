@@ -3,7 +3,7 @@
 // debug utils
 //Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 "use strict";
-const { stack: Cs } = Components;
+var { stack: Cs } = Components;
 var { loader, require } = ChromeUtils.import("resource://devtools/shared/Loader.jsm");
 //var {Services} =  ChromeUtils.import("resource://gre/modules/Services.jsm");
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
@@ -274,6 +274,9 @@ let ExpressionSearchLog = {
   },
   
   logException: function(e, popup) {
+    if (!Cs) var { stack: Cs } = Components;
+    if (!Services) var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
+  
     let msg = "";
     if ( typeof(e) != 'string' ) {
       if ( 'name' in e && 'message' in e ) msg += e.name + ": " + e.message + "\n";

@@ -3,21 +3,23 @@
 // GPL V3 / MPL
 //Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 "use strict";
+//debugger;
+
 var EXPORTED_SYMBOLS = ["ExpressionSearchChrome"];
 
 //Cu.import("resource://gre/modules/Timer.jsm");
-var  {clearTimeout, setTimeout} = ChromeUtils.import("resource://gre/modules/Timer.jsm");
-var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
-console.log("vor import ExpressionSearchLog");
-var  {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
-console.log("nach import ExpressionSearchLog", ExpressionSearchLog);
-var {ExpressionSearchaop} = ChromeUtils.import("chrome://expressionsearch/content/aop.js");
- 
-
-var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/content/common.js");
-  
+var  { clearTimeout, setTimeout } = ChromeUtils.import("resource://gre/modules/Timer.jsm");
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 
 
+let console = {
+
+  log: function (...a) {
+    //console.log(a);
+  } 
+}
+
+var ExperssionSearchFilter = {};
 
     /* https://bugzilla.mozilla.org/show_bug.cgi?id=1383215#c24
     There are two ways that we currently support packaging omnijar:
@@ -30,9 +32,7 @@ var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/con
     
     But the code that's using resource://gre/ URLs for app content, or vice versa, is still technically wrong. */
     
-    //Cu.import("chrome://expressionsearch/content/gmailuiParse.js");
-    var {ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens} = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
-
+ 
     //.import("chrome://expressionsearch/content/aop.js");
   //  //Cu.import("chrome://expressionsearch/content/common.js");
  //   var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/content/common.js");
@@ -40,7 +40,7 @@ var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/con
     // for hook functions for attachment search
     var { SearchSpec } = ChromeUtils.import("resource:///modules/SearchSpec.jsm");
       // general services
-      var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+      var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
       var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
          // for create quick search folder
 //Cu.import("resource:///modules/virtualFolderWrapper.js"); // for VirtualFolderHelper
@@ -69,7 +69,13 @@ var { GlodaIndexer } = ChromeUtils.import(
 );
 
  
- 
+var {
+  MessageTextFilter,
+  QuickFilterManager,
+  QuickFilterSearchListener,
+  QuickFilterState,
+} = ChromeUtils.import("resource:///modules/QuickFilterManager.jsm");
+
  
  // to call gloda search, actually no need
     //Cu.import("resource:///modules/gloda/msg_search.js");
@@ -79,13 +85,27 @@ var { GlodaIndexer } = ChromeUtils.import(
  //   console.log("end importModulesit", ExperssionSearchFilter);
  
 
+   //Cu.import("chrome://expressionsearch/content/gmailuiParse.js");
+ //  var { ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens } = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
 
 
+ console.log("vor import ExpressionSearchLog");
+ var  { ExpressionSearchLog } =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
+ console.log("nach import ExpressionSearchLog", ExpressionSearchLog);
+ 
+
+ console.log("nochmal GMAILUIParse in ");
+ var { ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens } = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
+ console.log("fertig GMAILUIParse in ");
 
 
-
-
-
+ console.log("vor ExpressionSearchaop");
+ var { ExpressionSearchaop } = ChromeUtils.import("chrome://expressionsearch/content/aop.js");
+ console.log("nach ExpressionSearchaop", ExpressionSearchaop); 
+ console.log("vor ExpressionSearchCommon");
+ 
+ var { ExpressionSearchCommon } = ChromeUtils.import("chrome://expressionsearch/content/common.js");
+ console.log("nach ExpressionSearchCommon");
 
 
 const XULNS = 'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul';
@@ -116,18 +136,28 @@ var ExpressionSearchChrome = {
 
   loaded: 0,
   init: function() {
-    debugger;
-    console.log("ExpressionSearchChrome init");
+    //debugger;
+    console.log("ExpressionSearchChrome init", "loaded", this.loaded);
   //  var  {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
-    if ( !this.loaded ) {
+  try {
+    console.log("Expression Search: init..importmodules.");//, false, true);
+    this.importModules();
+    ExpressionSearchLog.log("ExpressionSearchChrome int: end..importmodules.", false, true);
+
+  } catch (err) {
+    ExpressionSearchLog.logException(err);
+  }
+  //debugger;
+  console.log("loaded",this.loaded);
+  if ( !this.loaded ) {
       if ( !this.prefs && ExpressionSearchLog ) {
-        ExpressionSearchLog.log("Expression Search is NOT restartless! Please restart Thunderbird!", 1);
+        ExpressionSearchLog.log("Expression Search is now restartless! ", 1);
       } else return;
     }
     this.loaded = 1;
     try {
       ExpressionSearchLog.log("Expression Search: init...", false, true);
-      this.importModules();
+//      this.importModules();
       this.initPerf();
     } catch (err) {
       ExpressionSearchLog.logException(err);
@@ -155,10 +185,43 @@ var ExpressionSearchChrome = {
   //  var {ExpressionSearchCommon} = ChromeUtils.import("chrome://expressionsearch/content/common.js");
   // too late var  {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
   //console.log("nach import ExpressionSearchLog", ExpressionSearchLog);
-  console.log(this.loaded);
+
+
+/*
+  console.log("vor import ExpressionSearchLog in importmodules");
+  if (!ExpressionSearchLog ) {
+    console.log("ExpressionSearchLog  undefined");
+//    {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
+  var  { ExpressionSearchLog } =  ChromeUtils.import("chrome://expressionsearch/content/log.js"); // load log first
+};
+  console.log("nach import ExpressionSearchLog in importmodules", ExpressionSearchLog);
+*/ 
+/*
+console.log("vor ExpressionSearchaop");
+var { ExpressionSearchaop } = ChromeUtils.import("chrome://expressionsearch/content/aop.js");
+console.log("nach ExpressionSearchaop", ExpressionSearchaop); 
+*/
+  
+/*
+var { ExpressionSearchCommon } = ChromeUtils.import("chrome://expressionsearch/content/common.js");
+
+if (!ExpressionSearchComputeExpression ) {
+  console.log("nochmal GMAILUIParse in importmodules");
+  var { ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens } = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
+  console.log("fertig GMAILUIParse in importmodules");
+
+}
+
+*/
+//console.log(this.loaded);
   //if (this.loaded==0) ExpressionSearchLog.log("Expression Search is NOT restartless! Please restart Thunderbird!", 1);
   //this.loaded=1;
-  var {ExperssionSearchFilter} = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter.js");
+//  var { ExperssionSearchFilter } = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter.js");
+console.log (" vor ExperssionSearchFilter");
+ExperssionSearchFilter = ChromeUtils.import("chrome://expressionsearch/content/ExpressionSearchFilter.js").ExperssionSearchFilter;
+  console.log ("ExperssionSearchFilter");
+  console.log (ExperssionSearchFilter);
+ 
   /*  
     // for hook functions for attachment search
     var { SearchSpec } = ChromeUtils.import("resource:///modules/SearchSpec.jsm");
@@ -203,7 +266,7 @@ var { GlodaIndexer } = ChromeUtils.import(
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1415567 Remove {get,set}ComplexValue use of nsISupportsString in Thunderbird
   oldAPI_58: Services.vc.compare(Services.appinfo.platformVersion, '58') < 0,
   complexPrefs: ["c2s_regexpMatch", "c2s_regexpReplace", "installed_version", "virtual_folder_path"],
-  mozIJSSubScriptLoader: Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Ci.mozIJSSubScriptLoader),
+  //mozIJSSubScriptLoader: Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Ci.mozIJSSubScriptLoader),
   
   // https://bugzilla.mozilla.org/show_bug.cgi?id=1413413 Remove support for extensions having their own prefs file
   setDefaultPrefs: function () {
@@ -218,19 +281,22 @@ var { GlodaIndexer } = ChromeUtils.import(
             branch.setIntPref(key, val);
             break;
           case "string": // default don't have complex values, only empty or simple strings
-            branch.setCharPref(key, val);
+            branch.setStringPref(key, val);
             break;
         }
       }
     };
     let uri = Services.io.newURI("chrome://expressionsearch/content/defaults.js");
     try {
-      this.mozIJSSubScriptLoader.loadSubScript(uri.spec, prefLoaderScope);
+//! not working      this.mozIJSSubScriptLoader.loadSubScript(uri.spec, prefLoaderScope);  setCharPref
+    //debugger;
+    Services.scriptloader.loadSubScript(uri.spec, prefLoaderScope, "UTF-8");
+
     } catch (err) {
       ExpressionSearchLog.logException(err);
     }
   },
-  
+    
   initPerf: function() {
     this.setDefaultPrefs();
     this.prefs = Services.prefs.getBranch("extensions.expressionsearch.");
@@ -290,6 +356,7 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
 
   initFunctionHook: function(win) {
+//    if (!ExpressionSearchaop)  var { ExpressionSearchaop } = ChromeUtils.import("chrome://expressionsearch/content/aop.js");
     if ( typeof(win.QuickFilterBarMuxer) == 'undefined' || typeof(win.QuickFilterBarMuxer.reflectFiltererState) == 'undefined' ) return;
 
     win._expression_search.hookedFunctions.push( ExpressionSearchaop.around( {target: win.QuickFilterBarMuxer, method: 'reflectFiltererState'}, function(invocation) {
@@ -568,8 +635,9 @@ var { GlodaIndexer } = ChromeUtils.import(
     let win = ExpressionSearchChrome.getWinFromEvent(event);
     me.isEnter = 0;
     let searchValue = this.value; // this is aNode/my search text box, updated with event.char
-    if ( event && ( ( event.DOM_VK_RETURN && event.keyCode==event.DOM_VK_RETURN ) || ( event.DOM_VK_ENTER && event.keyCode==event.DOM_VK_ENTER ) ) ) {
-      me.isEnter = 1;
+    if ( event && ( ( event.code=="return" ) || ( event.code=="enter" ) ) ) {
+//      if ( event && ( ( event.DOM_VK_RETURN && event.keyCode==event.DOM_VK_RETURN ) || ( event.DOM_VK_ENTER && event.keyCode==event.DOM_VK_ENTER ) ) ) {
+        me.isEnter = 1;
       let panel = win.document.getElementById("qfb-text-search-upsell");
       if ( typeof(searchValue) != 'undefined' && searchValue != '' ) {
         if ( event.ctrlKey || event.metaKey ) { // create quick search folder
@@ -595,9 +663,11 @@ var { GlodaIndexer } = ChromeUtils.import(
     } // end of IsEnter
     me.hideUpsellPanel(win); // hide the panel when key press
     // -- Keypresses for focus transferral
-    if ( event && event.DOM_VK_DOWN && ( event.keyCode == event.DOM_VK_DOWN ) && !event.altKey )
+    if ( event && ( event.code == "ArrowDown" ) && !event.altKey )
+//    if ( event && event.DOM_VK_DOWN && ( event.keyCode == event.DOM_VK_DOWN ) && !event.altKey )
       me.selectFirstMessage(win, true);
-    else if ( ( typeof(searchValue) == 'undefined' || searchValue == '' ) && event && event.DOM_VK_ESCAPE && ( event.keyCode == event.DOM_VK_ESCAPE ) && !event.altKey && !event.ctrlKey )
+    else if ( ( typeof(searchValue) == 'undefined' || searchValue == '' ) && event && ( event.code ==  "Escape"  ) && !event.altKey && !event.ctrlKey )
+//    else if ( ( typeof(searchValue) == 'undefined' || searchValue == '' ) && event && event.DOM_VK_ESCAPE && ( event.keyCode == event.DOM_VK_ESCAPE ) && !event.altKey && !event.ctrlKey )
       me.selectFirstMessage(win); // no select message, but select pane
     //else if (  event.altKey && ( event.ctrlKey || event.metaKey ) && event.keyCode == event.DOM_VK_LEFT ) // Ctrl + <-- not works when focus in textbox
     //  me.back2OriginalFolder(win);
@@ -605,7 +675,7 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
   
   onSearchKeyPress: function(event){
-    debugger;
+    //debugger;
     let self = this;
     // defer the call or this.value is still the old value, not updated with event.char yet
     setTimeout( function(){ ExpressionSearchChrome.delayedOnSearchKeyPress.call(self,event); }, 0);
@@ -636,6 +706,7 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
 
   initSearchInput: function(win) {
+    console.log("initSearchInput");
     let doc = win.document;
     let mainBar = doc.getElementById(this.needMoveId);
     let oldTextbox = doc.getElementById(this.originalFilterId);
@@ -647,24 +718,62 @@ var { GlodaIndexer } = ChromeUtils.import(
     // TB69, for    customElements.define("search-textbox", MozSearchTextbox, { extends: "textbox" });
  //   let aNode = doc.createElementNS(XULNS, "search-textbox", {is: "search-textbox"});
   //  let aNode = doc.createElementNS(XULNS, "search-textbox", {is: "search-textbox"});
+
+  //code in moz-central has this without the {is: ...}
     let aNode = doc.createXULElement("search-textbox");//, {is: "search-textbox"});
+ // let aNode = oldTextbox.cloneNode();
     aNode.id = this.textBoxDomId;
     aNode.setAttribute("class", "searchBox");
-   // aNode.setAttribute("type", "search");
+    aNode.setAttribute("type", "search");
     aNode.setAttribute("emptytextbase", this.strBundle.GetStringFromName("textbox.emptyText.base"));
     aNode.setAttribute("timeout", 1000);
     aNode.setAttribute("maxlength", 2048);
     aNode.setAttribute("width", 320);
     aNode.setAttribute("maxwidth", 500);
     aNode.setAttribute("minwidth", 280);
+    console.log("create box, command",aNode, oldTextbox,oldTextbox._commandHandler )
+  //  aNode.onCommand = oldTextbox.onCommand;
+//is the following needed??
+//?    aNode.setAttribute("keyLabelNonMac", "<Strg-Umschalt-L>");
+//?    aNode.setAttribute("keyLabelMac", "<L>");
+//because of the #1 in emptytextbase??
     oldTextbox.parentNode.insertBefore(aNode, oldTextbox.nextSibling);
-    win._expression_search.createdElements.push(aNode);
+     win._expression_search.createdElements.push(aNode);
   
     aNode.addEventListener("keypress", this.onSearchKeyPress, true); // false will be after onComand, too late
+    //aNode.addEventListener("keypress", this.onSearchKeyPress, false); // false will be after onComand, too late
+    //aNode.addEventListener("input", this.onSearchKeyPress, true); // false will be after onComand, too late
     //aNode.addEventListener("input", this.onTokenChange, true); // input can't get arrow key change but can get update when click2search
     aNode.addEventListener("click", this.onTokenChange, true); // to track selectEnd change
     aNode.addEventListener("blur", this.onSearchBarBlur, true);
     aNode.addEventListener("focus", this.onSearchBarFocus, true);
+
+    //not needed explicitly
+    function  handler(aEvent) {
+      let filterValues = QuickFilterBarMuxer.activeFilterer.filterValues;
+      let preValue =
+        latchedFilterDef.name in filterValues
+          ? filterValues[latchedFilterDef.name]
+          : null;
+      let [postValue, update] = latchedFilterDef.onCommand(
+        preValue,
+        domNode,
+        aEvent,
+        document
+      );
+      QuickFilterBarMuxer.activeFilterer.setFilterValue(
+        latchedFilterDef.name,
+        postValue,
+        !update
+      );
+      if (update) {
+        QuickFilterBarMuxer.deferredUpdateSearch();
+      }
+    };
+  
+  //aNode.addEventListener("command", handler);
+
+
     this.setSearchTimeout(win);
   },
   
@@ -696,7 +805,7 @@ var { GlodaIndexer } = ChromeUtils.import(
       alert('Expression Search: Cannot determine root folder of search');
       return;
     }
-    let virtual_folder_path = this.prefs.getCharPref('virtual_folder_path'); // '' or 'mailbox://nobody@Local%20Folders/Archive'
+    let virtual_folder_path = this.prefs.getStringPref('virtual_folder_path'); // '' or 'mailbox://nobody@Local%20Folders/Archive'
     let targetFolderParent = rootFolder;
     if ( virtual_folder_path != '' ) targetFolderParent = ExpressionSearchCommon.getFolder(virtual_folder_path);
     if ( !targetFolderParent ) {
@@ -961,19 +1070,15 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
   
   firstRunAction: function() {
+ //! not working
     let anchor = '';
     if ( this.options.installed_version != "0.1" ) anchor = '#version_history'; // this is an update
     let firstRun = Services.vc.compare( this.options.current_version, this.options.installed_version );
     // must before loadTab
-    if ( this.oldAPI_58 ) {
-      let str = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
-      str.data = this.options.current_version;
-      this.prefs.setComplexValue('installed_version', Ci.nsISupportsString, str);
-    } else {
-      this.prefs.setStringPref('installed_version', this.options.current_version);
-    }
+    this.prefs.setStringPref('installed_version', this.options.current_version);
+    
     if ( firstRun > 0 ) { // first for this version
-      ExpressionSearchCommon.loadTab('expressionsearch.helpfile', anchor);
+//      ExpressionSearchCommon.loadTab('expressionsearch.helpfile', anchor);
     }
   },
 
@@ -1008,7 +1113,7 @@ var { GlodaIndexer } = ChromeUtils.import(
       let description = doc.createElementNS(XULNS, "description");
       description.id = tooltipId + "-line" + i;
       description.setAttribute('class', 'tooltip-' + classes[i-1]);
-      //debugger;
+      ////debugger;
       if ( i == 1 || i == 2) {
         description.textContent = this.strBundle.GetStringFromName("info.helpLine"+i);
       } else {
@@ -1064,19 +1169,34 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
   
   loadInto3pane: function(win) {
+    console.log("loadInto3pane");
     let me = ExpressionSearchChrome;
     try {
       me.initFunctionHook(win);
       me.initStatusBar.apply(me, [win]);
       me.initSearchInput.apply(me, [win]);
+      console.log("after initSearchInput");
       me.refreshFilterBar(win);
+      console.log("after refreshFilterBar");
       me.registerCallback(win);
+      console.log("after registerCallback");
       let threadPane = win.document.getElementById("threadTree");
+      console.log("threadPane", threadPane);
       if ( threadPane ) {
         // On Mac, contextmenu is fired before onclick, thus even break onclick  still has context menu
         threadPane.addEventListener("contextmenu", me.onContextMenu, true);
-      }
-    } catch (ex) {
+      };
+      console.log("ExperssionSearchFilter  in  loadInto3pane");
+      console.log(ExperssionSearchFilter );
+     QuickFilterManager.defineFilter(ExperssionSearchFilter);
+QuickFilterManager.textBoxDomId = ExperssionSearchFilter.domId;
+console.log("after defineFilter in loadinto3pane");
+let topWin = Services.wm.getMostRecentWindow("mail:3pane");
+topWin.QuickFilterBarMuxer._bindUI();
+console.log("after _bindUI in loadinto3pane");
+ /**/
+ //     ExperssionSearchFilter.initTest();
+     } catch (ex) {
       ExpressionSearchLog.logException(ex);
     }
   },
@@ -1092,6 +1212,7 @@ var { GlodaIndexer } = ChromeUtils.import(
   },
 
   Load: function(win) {
+    console.log("start Load");
     let me = ExpressionSearchChrome;
     //window.removeEventListener("load", me.Load, false);
     if ( typeof(win._expression_search) != 'undefined' ) return ExpressionSearchLog.log("expression search already loaded, return");
@@ -1109,7 +1230,7 @@ var { GlodaIndexer } = ChromeUtils.import(
     me.options.current_version = "0.0"; // in default.js, it's 0.1, so first installed users also have help loaded
     try {
         if ( oldAPI_61 ) {
-          AddonManager.getAddonByID("{03EF8A6E-C972-488f-92FA-98ABC2C9F8B9}", function(addon) {
+          AddonManager.getAddonByID("expressionsearch@opto.one", function(addon) {
             me.options.current_version = addon.version;
             me.firstRunAction.apply(me);
           });
@@ -1298,6 +1419,6 @@ var { GlodaIndexer } = ChromeUtils.import(
           selectedList.add(folder);
       }
     }
-  },
+  }
 
 };

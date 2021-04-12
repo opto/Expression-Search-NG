@@ -432,6 +432,7 @@ var BootstrapLoader = class extends ExtensionCommon.ExtensionAPI {
 
 
         registerDefaultPrefs(defaultUrl) {
+ //debugger;
           let url = context.extension.rootURI.resolve(defaultUrl);
 
           let prefsObj = {};

@@ -6,11 +6,11 @@
 
     }
   },
-  "version": "2.5beta",
+  "version": "2.9",
   "manifest_version": 2,
-  "name": "Expression Search / Google Mail UI- NG (for TB 78+)",
-  "description": "Type 'from:fred to:tom' to see all messages from Fred to Tom in the current view.",
-  "author": "Klaus Buecher, Opera Wang",
+  "name": "Expression Search - NG",
+  "description": "Type 'from:fred to:tom' or 'f:fred t:tom' to see all messages from Fred to Tom in the current view.",
+  "author": "Klaus Buecher, Opera Wang, Ken Mixter",
   "homepage_url": "https://github.com/opto/expression-search-NG",
   
   "icons": {

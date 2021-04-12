@@ -29,18 +29,18 @@ messenger.BootstrapLoader.onNotifyBackground.addListener(async (info) => {
    switch (reason) {
      case "install":
      {
-//       const url = messenger.runtime.getURL("popup/installed.html");
-//       await messenger.windows.create({ url, type: "popup", height: 680, width: 900, });
-         await messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
+       const url = messenger.runtime.getURL("popup/installed.html");
+       await messenger.windows.create({ url, type: "popup", height: 750, width: 1090, });
+//         await messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
       }
      break;
      
      case "update":
      {
-//       const url = messenger.runtime.getURL("popup/update.html");
+       const url = messenger.runtime.getURL("popup/update.html");
        // const url = messenger.runtime.getURL("popup/installed.html");
-       await messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
-       //       await messenger.windows.create({ url, type: "popup", height: 680, width: 990, });
+//       await messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
+         await messenger.windows.create({ url, type: "popup", height: 750, width: 1090, });
      }
      break;
    }
@@ -48,25 +48,35 @@ messenger.BootstrapLoader.onNotifyBackground.addListener(async (info) => {
  
  
 
-messenger.BootstrapLoader.registerChromeUrl([ 
-    ["content", "expressionsearch",           "content/"],
-    ["locale",  "expressionsearch", "en-US",  "locale/en-US/"],
- //   ["locale",  "quicktext", "ca",     "chrome/locale/ca/"],
-    ["locale",  "expressionsearch", "de",     "locale/de/"],
-    /*,
-    ["locale",  "quicktext", "es-MX",  "chrome/locale/es-MX/"],
-    ["locale",  "quicktext", "es",     "chrome/locale/es/"],
-    ["locale",  "quicktext", "fr",     "chrome/locale/fr/"],
- */
-    ["resource",  "expressionsearch",  ""]
-
-]);
 
 
 
 
 
 
-messenger.BootstrapLoader.registerDefaultPrefs("content/defaults.js");
+ async function main () {
 
- messenger.BootstrapLoader.registerBootstrapScript("bootstrap.js");
+ await  messenger.BootstrapLoader.registerChromeUrl([ 
+      ["content", "expressionsearch",           "content/"],
+      ["locale",  "expressionsearch", "en-US",  "locale/en-US/"],
+   //   ["locale",  "quicktext", "ca",     "chrome/locale/ca/"],
+      ["locale",  "expressionsearch", "de",     "locale/de/"],
+      /*,
+      ["locale",  "quicktext", "es-MX",  "chrome/locale/es-MX/"],
+      ["locale",  "quicktext", "es",     "chrome/locale/es/"],
+      ["locale",  "quicktext", "fr",     "chrome/locale/fr/"],
+   */
+      ["resource",  "expressionsearch",  ""]
+  
+  ]);
+   //debugger;
+
+   await   messenger.BootstrapLoader.registerDefaultPrefs("content/defaults.js");
+   //debugger;
+   await messenger.BootstrapLoader.registerOptionsPage("chrome://expressionsearch/content/esPrefDialog.xhtml");
+   await     messenger.BootstrapLoader.registerBootstrapScript("bootstrap.js");
+   
+ };
+
+
+ main();

@@ -6,7 +6,7 @@
 "use strict";
 
 var EXPORTED_SYMBOLS = ["ExperssionSearchFilter"];
-
+//debugger;
 var { ExtensionCommon } = ChromeUtils.import("resource://gre/modules/ExtensionCommon.jsm");
 
 var { ExtensionParent } = ChromeUtils.import("resource://gre/modules/ExtensionParent.jsm");
@@ -17,9 +17,9 @@ var ESextension = ExtensionParent.GlobalManager.getExtension("expressionsearch@o
 
 const { nsMsgSearchAttrib: nsMsgSearchAttrib, nsMsgSearchOp: nsMsgSearchOp, nsMsgMessageFlags: nsMsgMessageFlags, nsMsgSearchScope: nsMsgSearchScope } = Ci;
 //if (!ExpressionSearchChrome  )  
-var  {ExpressionSearchChrome} =  ChromeUtils.import("chrome://expressionsearch/content/es.js");
+var  { ExpressionSearchChrome } =  ChromeUtils.import("chrome://expressionsearch/content/es.js");
 console.log("ExpressionSearchChrome",ExpressionSearchChrome);
-var {ExpressionSearchLog} =  ChromeUtils.import("chrome://expressionsearch/content/log.js");
+var { ExpressionSearchLog } =  ChromeUtils.import("chrome://expressionsearch/content/log.js");
 var {
   MessageTextFilter,
   QuickFilterManager,
@@ -27,10 +27,10 @@ var {
   QuickFilterState,
 } = ChromeUtils.import("resource:///modules/QuickFilterManager.jsm");
 
-var  {ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens}  = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
-var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+var  { ExpressionSearchComputeExpression, ExpressionSearchExprToStringInfix, ExpressionSearchTokens }  = ChromeUtils.import("chrome://expressionsearch/content/gmailuiParse.js");
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
-var {GlodaUtils} = ChromeUtils.import("resource:///modules/gloda/GlodaUtils.jsm");// for GlodaUtils.deMime and parseMailAddresses
+var { GlodaUtils } = ChromeUtils.import("resource:///modules/gloda/GlodaUtils.jsm");// for GlodaUtils.deMime and parseMailAddresses
 //Cu.import("resource:///modules/gloda/indexer.js");
 
 // XXX we need to know whether the gloda indexer is enabled for upsell reasons,
@@ -370,6 +370,7 @@ let ExperssionSearchFilter = {
   latchQSFolderReq: 0,
 
   appendTerms: function(aTermCreator, aTerms, aFilterValue) {
+    //debugger;
     try {
       // we're in javascript modules, no window object, so first find the top window
       let topWin = {};
@@ -431,6 +432,7 @@ let ExperssionSearchFilter = {
 
   domBindExtra: function(aDocument, aMuxer, aNode) {
     // -- platform-dependent emptytext setup
+    //debugger;
     let filterNode = aDocument.getElementById('qfb-qs-textbox');
     let quickKey = '';
     let attributeName = "placeholder";
@@ -461,6 +463,7 @@ let ExperssionSearchFilter = {
   },
 
   onCommand: function(aState, aNode, aEvent, aDocument) { // may get skipped when init, but appendTerms get called
+ //debugger;
     let text = aNode.value.length ? aNode.value : null;
     aState = aState || {}; // or will be no search.
     let needSearch = false;
@@ -873,8 +876,15 @@ ExpressionSearchChrome.showHideHelp(aDocument.defaultView, false);
     ExpressionSearchLog.info("Expression Search Terms: "+this.getSearchTermString(searchTerms));
     return null;
   },
-  
+
+  initTest: function (){
+    QuickFilterManager.defineFilter(ExperssionSearchFilter);
+    QuickFilterManager.textBoxDomId = ExperssionSearchFilter.domId;
+
+  }
+
 } // end of ExperssionSearchFilter define
-QuickFilterManager.defineFilter(ExperssionSearchFilter);
-QuickFilterManager.textBoxDomId = ExperssionSearchFilter.domId;
+//console.log("before QuickFilterManager.defineFilter");
+//QuickFilterManager.defineFilter(ExperssionSearchFilter);
+//QuickFilterManager.textBoxDomId = ExperssionSearchFilter.domId;
 

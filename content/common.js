@@ -4,7 +4,7 @@
 //Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
 
 "use strict";
-var {Services} = ChromeUtils.import("resource://gre/modules/Services.jsm");
+var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 var { MailServices } = ChromeUtils.import("resource:///modules/MailServices.jsm");
 var { MailUtils } = ChromeUtils.import("resource:///modules/MailUtils.jsm");
 const ADDON_ID = "expressionsearch@opto.one";
@@ -123,5 +123,5 @@ loadDonate: function(pay) {
       } catch(err) {}
     }
     return msgFolder;
-  },
+  }
 }
