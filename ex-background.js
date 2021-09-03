@@ -11,7 +11,7 @@ messenger.BootstrapLoader.onNotifyBackground.addListener(async (info) => {
    switch (info.command) {
      case "showHelp":
        //do something
-       console.log("showHelp");
+  //     console.log("showHelp");
        messenger.windows.create({ url, type: "popup", width: 910, height: 750, });
 
        //let rv = await doSomething();

@@ -815,7 +815,7 @@ var { GlodaIndexer } = ChromeUtils.import(
     let QSFolderURI = targetFolderParent.URI + "/" + QSFolderName;
     
     if ( !targetFolderParent.containsChildNamed(QSFolderName) || ! this.options.reuse_existing_folder ) {
-      for (let folder of fixIterator(rootFolder.descendants, Ci.nsIMsgFolder)) {
+      for (let folder of rootFolder.descendants) {
         // only add non-virtual non-news folders
         if ( !folder.isSpecialFolder(nsMsgFolderFlags.Newsgroup,false) && !folder.isSpecialFolder(nsMsgFolderFlags.Virtual,false) ) {
           if (uriSearchString != "") {
@@ -1379,7 +1379,7 @@ console.log("after _bindUI in loadinto3pane");
 
   changeSubFolder: function(win, type, folder) {
     try {
-      for (let child of fixIterator(folder.subFolders, Ci.nsIMsgFolder)) {
+      for (let child of folder.subFolders) {
         ExpressionSearchChrome.setFolderSelected(win, child, folder);
         if ( type == 2 && child.hasSubFolders && child.numSubFolders > 0 ) {
           ExpressionSearchChrome.changeSubFolder(win, type, child);
@@ -1393,7 +1393,7 @@ console.log("after _bindUI in loadinto3pane");
   changeAllFolder: function(win, state) {
     try {
       let accounts = MailServices.accounts.accounts;
-      for ( let account of fixIterator(accounts, Ci.nsIMsgAccount) ) {
+      for ( let account of accounts ) {
         ExpressionSearchChrome.setFolderSelected(win, account.incomingServer.rootFolder, 0, state);
         ExpressionSearchChrome.changeSubFolder(win, 2, account.incomingServer.rootFolder);
         win.gFolderTreeView._tree.invalidate();

@@ -163,12 +163,12 @@ function startup(aData, aReason) {
   // install userCSS, works for all document like userChrome.css, see https://developer.mozilla.org/en/docs/Using_the_Stylesheet_Service
   // validator warnings on the below line, ignore it
   if (!sss.sheetRegistered(userCSS, sss.USER_SHEET)) sss.loadAndRegisterSheet(userCSS, sss.USER_SHEET); // will be unregister when shutdown
-  console.log("end startup");
+  //console.log("end startup");
 }
 
 function shutdown(aData, aReason) {
   // When the application is shutting down we normally don't have to clean up any UI changes made
-  console.log("bootstrap shutdown", (aReason == APP_SHUTDOWN));
+  //console.log("bootstrap shutdown", (aReason == APP_SHUTDOWN));
   if (aReason == APP_SHUTDOWN) return;
 
   try {

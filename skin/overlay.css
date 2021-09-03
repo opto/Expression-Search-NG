@@ -104,3 +104,8 @@
 .titlebar-placeholder {
   flex: 0.1 100;
 }
+
+.menuli  {
+
+  border: solid black 1px;
+}

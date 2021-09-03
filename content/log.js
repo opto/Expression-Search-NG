@@ -8,7 +8,7 @@ var { loader, require } = ChromeUtils.import("resource://devtools/shared/Loader.
 //var {Services} =  ChromeUtils.import("resource://gre/modules/Services.jsm");
 var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
 //Cu.import("resource:///modules/iteratorUtils.jsm"); // import toXPCOMArray
-var { fixIterator, toXPCOMArray } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+//!var { fixIterator, toXPCOMArray } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
 // Console.jsm in Gecko < 23 calls dump(), not to Error Console
 var {console} = ChromeUtils.import("resource://gre/modules/Console.jsm", {});
 
@@ -73,16 +73,19 @@ let ExpressionSearchLog = {
     let args = [popupImage, title, msg, true, cookie, 0, '', '', null, false, this.popupListener];
     // win is nsIDOMJSWindow, nsIDOMWindow
     var { Services } = ChromeUtils.import("resource://gre/modules/Services.jsm");
-    let { fixIterator, toXPCOMArray } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
+ //   let { fixIterator, toXPCOMArray } = ChromeUtils.import("resource:///modules/iteratorUtils.jsm");
     let win = Services.ww.openWindow(null, 'chrome://global/content/alerts/alert.xhtml', "_blank", 'chrome,titlebar=no,popup=yes',
       // https://alexvincent.us/blog/?p=451
       // https://groups.google.com/forum/#!topic/mozilla.dev.tech.js-engine/NLDZFQJV1dU
-       toXPCOMArray(args.map( function(arg) {
+    //   toXPCOMArray(
+         args.map( function(arg) {
         let variant = Cc["@mozilla.org/variant;1"].createInstance(Ci.nsIWritableVariant);
         if ( arg && typeof(arg) == 'object' ) variant.setAsInterface(Ci.nsIObserver, arg); // to pass the listener interface
         else variant.setFromVariant(arg);
         return variant;
-      } ), Ci.nsIMutableArray));
+      } ), Ci.nsIMutableArray
+      //)
+      );
       ExpressionSearchLog.popupWins[cookie] = Cu.getWeakReference(win);
     // sometimes it's too late to set win.arguments here when the xul window is reused.
     // win.arguments = args;
