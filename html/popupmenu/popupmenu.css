@@ -1,0 +1,49 @@
+.jqpopupmenu,
+.jqpopupmenu ul {
+  /*topmost and sub ULs, respectively*/
+  font: normal 13px Verdana;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  list-style-type: none;
+  background: white;
+  border: 1px solid black;
+  display: none;
+  /*collapse all sub menus to begin with*/
+  box-shadow: 3px 3px 8px #818181;
+  /*shadow for CSS3 capable browsers.*/
+  -moz-box-shadow: 3px 3px 8px #818181;
+}
+
+
+.jqpopupmenu li {
+  position: relative;
+  white-space: nowrap;
+}
+
+.jqpopupmenu li a {
+  display: block;
+  color: black;
+  background: #F5F5F5;
+  text-decoration: none;
+  padding: 4px 5px;
+  cursor: pointer;
+}
+
+.jqpopupmenu li.arrow > a:after {
+  content: url('arrow.gif');
+  margin-left: 15px;
+}
+
+.jqpopupmenu li a:hover,
+.jqpopupmenu li.selected>a {
+  background: #e0e0e0;
+}
+
+.rightarrowclass {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+}

@@ -1,0 +1,30 @@
+h1 {
+  font-size: 130%;
+  margin-bottom: 2px;
+}
+
+p {
+  font-size: 90%;
+  margin-top: 2px;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+fieldset {
+  display: flex;
+  flex-flow: column;
+  margin:1ex;
+  padding:1ex;
+  flex: 1;
+}
+

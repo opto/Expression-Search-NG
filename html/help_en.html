@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Expression Search-NG</title>
+  <script type="application/javascript" src="/scripts/listener.js"></script>
+  <style type="text/css">
+    body {
+      color: black;
+      background-color: white;
+    }
+
+    #helpcontent {
+      max-width: 1000px;
+      max-height: 800px;
+    }
+
+    a {
+      color: blue;
+    }
+
+    .notice {
+      color: red;
+      font-weight: bold;
+    }
+
+    .bz_closed {
+      color: grey;
+    }
+
+    .bz_closed a {
+      text-decoration: line-through;
+      color: grey;
+    }
+  </style>
+</head>
+
+<body>
+  <div id=helpcontent>
+    <p><b>Expression Search / GMailUI - NG </b>is an extension to Thunderbird (versions 31.0+) which adds powerful
+      message searching features.
+      Init by Ken Mixter, developed over many years by Opera Wang, updated to TB 78+ by Klaus Buecher/opto.</p>
+    <p>
+      Type "hello world" to search within the current view for this string in subject/from/to/cc.<br />
+      Type "from:fred to:tom attachment:yes" or "f:fred t:tom att:yes" to see all messages from Fred to Tom in the
+      current view that have an attachment.<br />
+      Type "s:bbb t:(oo -pp)" to see all messages with subject bbb, send to oo but not to pp.
+      Press Ctrl+Enter to have this search apply to all folders through virtual folder.<br />
+      Press Shift+Enter to invoke Gloda Search in all indexed folders.<br />
+      Use Ctrl/Shift+Right Click to search the clicked subject/From/Recipient.<br />
+    </p>
+
+    <h3>Search expressions and quick search key</h3>
+    <p>
+      This extension adds a new search text box to the end of your quick search bar. Whatever phrase you enter
+      is searched for in your currently selected folder's to/from/cc/subject fields. Notice that by default
+      the body is not searched for your search phrase. If that results in too many matches,you can focus the search
+      using "operators". Operators are just short words followed by a colon, such as "from:amazon.com".
+    </p>
+
+    Here are some examples:
+    <ol>
+      <li>
+        <p><b>weekend plans</b></p>
+        <p>This expression searches all messages in the current folder or view for
+          'weekend plans' in the <i>from</i>, <i>to</i>, <i>cc</i>, or <i>subject</i>
+          fields.</p>
+        <p>If "Act as normal filter" enabled, the "Sender", "Recipients", "Subject" and "Body" buttons will
+          determine to search in which fields.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>from:mike</b> or <b>f:mike</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for 'mike' in the <i>from</i>
+          field.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>to:bill</b> or <b>t:bill</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for 'bill' in the
+          <i>to</i> or <i>cc</i> fields of the message.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>tonocc:bill</b> or <b>cc:tom</b> or <b>bcc:riddle</b>
+        </p>
+        <p>Like above, <b>tonocc</b> will search <i>to</i> field only, <b>cc/bcc</b> will search <i>cc/bcc</i> field
+          only. Case insensitive.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>only:tom</b> or <b>o:tom</b>
+        </p>
+        <p>Search for 'tom', and 'tom' should be the only recipients in <i>to</i> filed. Case insensitive.<br />
+          Note: 'only:(tom or jerry)' will get message that <i>to</i> filed is 'tom' or 'jerry' only, while 'only:(tom
+          and jerry)' will get nothing, please use 'only:(tom,jerry)' instead if you want to search emails that
+          recipients contain and only contain both 'tom' and 'jerry'.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>fromto:tom</b> or <b>ft:tom</b>
+        </p>
+        <p>Search for 'tom', and 'tom' can be in either <i>from</i>, <i>to</i>, <i>cc</i>, or <i>bcc</i>. Case
+          insensitive.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>subject:electric bill</b> or <b>s:electric bill</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for 'electric bill'
+          in the <i>subject</i> fields of the message. Case insensitive.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>simple:this subject contains special characters like ( ) ' " - etc</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view in the <i>subject</i>
+          fields of the message. And the pattern can contain special characters. unlike "subject" search, this search
+          won't suffer from <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=124641'>Bug
+            124641</a>.
+        </p>
+        <p>This pattern must be the last pattern. Case <b>sensitive</b>.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>regex:/^begin/i</b> or <b>re:end$</b> or <b>r:/\d+\s*\d+/</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view with <a href="#"
+            data-external-href='https://developer.mozilla.org/en/JavaScript/Guide/Regular_Expressions'>Regular
+            Expressions</a>
+          in the <i>subject</i> fields of the message.
+        </p>
+        <p>This pattern must be the last pattern. Case <b>sensitive</b> unless you have //i.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>headerre:List-Id=/all-test/i</b> or <b>h:list-id</b> or <b>h:sender=/^Bob/</b> or <b>hr:header~/^value/</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view with <a href="#"
+            data-external-href='https://developer.mozilla.org/en/JavaScript/Guide/Regular_Expressions'>Regular
+            Expressions</a>
+          in the header of the message. The header should be already saved in Thunderbird's .msf database.
+          You can <a href="#"
+            data-external-href="https://developer.mozilla.org/en-US/docs/Extensions/Thunderbird/customDBHeaders_Preference">config</a>
+          the headers in 'options/Search More Headers', If you added one header, it will only affect
+          newly added emails unless you do 'repaire folder'.
+        </p>
+        <p>This pattern must be the last pattern. Header is case insensitive, Value is case <b>sensitive</b> unless you
+          have //i.
+          If the value is empty, Any message has the header will match.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>fromre:/^begin/i</b> or <b>fr:end$</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view with <a href="#"
+            data-external-href='https://developer.mozilla.org/en/JavaScript/Guide/Regular_Expressions'>Regular
+            Expressions</a>
+          in the <i>from</i> fields of the message.
+        </p>
+        <p>This pattern must be the last pattern. Case <b>sensitive</b> unless you have //i.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>tore:/^begin/i</b> or <b>tr:end$</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view with <a href="#"
+            data-external-href='https://developer.mozilla.org/en/JavaScript/Guide/Regular_Expressions'>Regular
+            Expressions</a>
+          in the <i>recipients</i>(to/cc/bcc) fields of the message.
+        </p>
+        <p>This pattern must be the last pattern. Case <b>sensitive</b> unless you have //i.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>attachment:yes</b> or <b>a:yes</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for an attachment,
+          Notice that it does not search for attachments named "yes". You can also use "y" or "1" for
+          "yes". You can use "no", "n", or "0" to search for messages without attachments.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>filename:foo.doc</b> or <b>fi:image</b> or <b>fn:msword</b> or <b>file:html</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for an attachment name or type. Case
+          insensitive.
+          If you just want to search messages that have attachment, use attachment:yes instead of using this one.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>is:replied</b> or <b>i:UnRead</b> or <b>status:Forwarded</b> or <b>status:F</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for status, The
+          status can be one of Replied, Read, Marked/Star, Forwarded, UnRead, New, ImapDeleted or Attachment.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>before:2011/03/09 07:12:00</b> or <b>be:09 Mar 2011 05:00:00</b> or <b>after:Mar 10, 2011</b> or
+          <b>af:(2011/03/01 -2011/03/09)</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view within the <i>date</i> range, The
+          date format can be checked <a href="#"
+            data-external-href='https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/parse'>Here</a>.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>before:07:12:00</b> or <b>be:5:9</b> or <b>after:03:07:05</b> or <b>af:(3:0 -4:0)</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view within the time range.
+          af:(3:0 -4:0) will search for messages in current view that <i>date</i> between 3am to 4am EVERY day.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>date:2011/01</b> or <b>date:2011/01/03</b> or <b>d:" 03:"</b> or in zh-CN locale <b>d:2011年3月</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view to match date.
+          The internal format for compare is "yyyy/mm/dd hh:mm:ss", locale date is also supported.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>ag:3</b> or <b>da:3</b> or <b>age:3</b> or <b>older_than:3</b> or <b>days:(3 -5)</b> or <b>age:today</b> or
+          <b>newer_than:8week</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view to match age in days.
+          days:(3 -5) will search for messages that age between 3 to 5 days.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>size:10</b> or <b>si:(0.5M -2M)</b> or <b>larger:1G</b> or <b>smaller:1024</b> or <b>sm:10</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view to match size in KB or MB/GB.
+          size:(3 -5) will search for messages that size is larger than 3KB and less than 5KB, that is 4.x KB.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>body:electric bill</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for 'electric bill'
+          in the body of the message. On large or remote folders it may take some time. Also, if you
+          combine this with other search operators like "from:", "subject:" or "to:" this will speed
+          things up considerably.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>bodyre:/hello.*world/i</b> or <b>br:test</b>
+        </p>
+        <p>This expression searches the body of all messages in the current folder or view with <a href="#"
+            data-external-href='https://developer.mozilla.org/en/JavaScript/Guide/Regular_Expressions'>Regular
+            Expressions</a>. Case
+          sensitive and should be the last pattern.
+          Only search <b>offline</b> messages.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>label:Important</b> or <b>tag:TODO</b> or <b>l:NA</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view which has the tag
+          Important. l:NA means all messages without tag.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>all: weekend plans</b>
+        </p>
+        <p>This expression searches all messages in the current folder or view for
+          'weekend plans' anywhere in the message, including the <i>from</i>, <i>to</i>, <i>cc</i>, or <i>subject</i>
+          fields, and the <i>body</i>.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>g: weather</b>
+        </p>
+        <p>This will call gloda (faceted) search if gloda enabled. This mode can't be used together will other
+          specifications like 'f:' or 't:'.
+        </p>
+      </li>
+      <li>
+        <p>
+
+          <b>3+2</b>
+        </p>
+        <p>If the expression looks like an arithmetic one, when you press enter, it will be calculated and the result
+          will be shown in the search box.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          <b>from:-foo from:-bar [...]</b>
+        </p>
+        <p>So-called <a href="#" data-external-href='https://github.com/wangvisual/expression-search/issues/47'>Inverted
+            Search</a>.
+          This is a <kbd>not x and not y [...]</kbd> search for the selected attribute (Here: <var>from:</var>).<br />
+          This is the GMail search-equivalent of: <kbd>-foo -bar</kbd>.
+        </p>
+      </li>
+
+    </ol>
+
+    <h3>Hot Key</h3>
+    <p>
+      By default, Press Ctrl+Shift+K, your cursor will appear in the expression search bar and
+      you will be able to type.</p>
+    <p>Once you are typing in your search query, and you hit enter or otherwise let
+      it begin searching, your cursor will remain inside of the query box to allow you
+      to modify the query. However, if you'd rather go back to browsing your messages,
+      instead of clicking on the message headers in your search results, you can just
+      press 'ESC' to to clear the search criteria, and press 'ESC' again to refocus back</p>
+
+    <h3>Quick Search Virtual Folder</h3>
+    <p>Virtual search folders are a standard and powerful feature of Thunderbird. These folders appear
+      in the folders list and their content depend on the search criteria associated with the given
+      virtual folder. Note two useful things:
+    <ol>
+      <li>The 'contents' of the virtual folder can actually be in any of your real folders,
+        and so a virtual folder actually can 'contain' messages that span many folders.</li>
+      <li>The virtual folder's contents are recomputed each time you view it. If
+        you saved a virtual folder with 'sender' field containing 'Donald' and you receive a new
+        message from someone named Donald, it will not only appear in your INBOX, but also in your
+        virtual folder.</li>
+    </ol>
+    </p>
+    <p>This extension makes it extremely easy to create these virtual search folders. Pressing 'ctrl-enter'
+      in the Expression search quick search bar is not only executing the search, but will create (or
+      update) the virtual folder called 'ExpressionSearch' for the currently entered search expression.
+      By default, this search will be executed in all folders of the current account.</p>
+    <p>The resulting virtual folder 'ExpressionSearch' can then be modified by editing its properties,
+      and can be renamed to make it a permanent virtual search folder. If you do not rename the folder,
+      the next time you use ctrl-enter the ExpressionSearch virtual folder is reused to show your new
+      quick search result.
+    </p>
+    <a name='keep_saved_search'></a>
+    <p>The option "<b>Keep selected folders for saved search</b>" will limit the search to the folders
+      currently defined in the settings of the "ExpressionSearch" virtual search folder (if it exists).
+      Use this setting if you want to manually specify which of your physical folders should be searched
+      with a global non-faceted search (CTRL+Enter).</p>
+    <p>The location where the virtual search folder "ExpressionSearch" is created can be set in the option
+      dialog. It defaults to the root folder of the current displayed folder</p>
+    <p>You can jump back to original folder by pressing Ctrl+Alt+LEFT</p>
+
+    <h3>More complex searching</h3>
+    <p>The quick search bar allows you use the simple expressions from above, but it also
+      allows you to compose more complex searches. For instance, if you want to search for
+      a message from Bob Barker to Dave Letterman about monologues, you can use:
+
+    </p>
+    <p><b>f:Bob Barker t:Dave Letterman s:monologues</b>
+    </p>
+    <p>If you are tired of getting results that have jokes about "Monica", you can instead use:
+
+    </p>
+    <p><b>f:Bob Barker t:Dave Letterman s:monologues -Monica</b>
+    </p>
+    <p>If you are interested in messages from either of these celebrities:
+
+    </p>
+    <p><b>f:Bob Barker or f:Dave Letterman</b>
+    </p>
+    <h3>Notes</h3>
+    <p>Note 1: For the average user, the above information is usually adequate. If you
+      are curious, this feature still relies upon an underlying Thunderbird message searching
+      mechanism. That mechanism cannot always perform searches correctly that have a combination of boolean
+      operators. So, if you try to perform a search that mixes "ands" and "ors" you may get back
+      too many results. As an example, if you were to search for "t:dan and f:(bob or dave)" you
+      will be mixing boolean operators and the results may be over inclusive or may work. As an extra technical
+      note, if you did "t:dan and -f:(bob or dave)", DeMorgan's theorem takes place and you are actually
+      composing a search of "t:dan and f:-bob and f:-dave".
+    </p>
+    <p>
+      However, due to restrictions in Thunderbird's virtual search folder, the complex searching results maybe correct
+      in your current search results, but maybe NOT in you search folder. as the search folder can only handle 'Match
+      all'
+      and 'Match any' types.
+    </p>
+    <p>
+      Note 2: If you want search all folders using expression, you can create a virtual folder manually (Ctrl+Shift+F)
+      with 'Match all messages',
+      then using expression search in the virtual folder.
+    </p>
+    <p>
+      Note 3: In case you also using the normal search filter, the final results is logically "AND", that means
+      both filter are effective.
+    </p>
+
+    <h3>Click 2 Search</h3>
+    <p>
+      If Enabled, you can use Ctrl/Shift+Right Click on sender/recipient/subject column to search for the same sender,
+      recipient or subject.
+    </p>
+    <p>
+      <a name="c2s_Replace"></a>
+      For subject line, if provided regular expression match/replace patterns and enabled the replace for corresponding
+      key combo, the pattern will be first executed
+    <pre>Replace subject before search.
+Multiple matches are ORed. Example:
+    Match:   \[#(\d*)\]
+    Replace: $1
+    Subject: [#1212][#2323]Some text
+    Result:  (1212 or 2323)</pre>
+    </p>
+    <p>
+      Also common prefix like 'Re:', 'Fw:', [mail-list-name] will be removed before search.
+    </p>
+
+  </div>
+</body>
+
+</html>

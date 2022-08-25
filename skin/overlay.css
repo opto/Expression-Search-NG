@@ -76,17 +76,13 @@
   display: none;
 }
 
-#quick-filter-bar-collapsible-buttons.showlabel toolbarbutton label.toolbarbutton-text {
-  display: inline;
-}
-
 #quick-filter-bar-collapsible-buttons.hideall, #qfb-filter-bar-spacer.hideall {
   display: none;
 }
 
 /* if the width is not enough, make others more flexiable to make my box shown */
 #qfb-filter-bar-spacer {
-  /* do in es.js based on position */
+  /* do in ExpressionSearchChrome.jsm based on position */
   margin: 0px !important;
   padding: 0px !important;
 }

@@ -1,0 +1,24 @@
+[
+  {
+    "namespace": "ExpressionSearch",
+    "functions": [
+      {
+        "name": "initPrefs",
+        "type": "function",
+        "async": true,
+        "parameters": []
+      },
+      {
+        "name": "initWindow",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "windowId",
+            "type": "integer"
+          }
+        ]
+      }
+    ]
+  }
+]

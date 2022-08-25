@@ -1,0 +1,43 @@
+div.vbox {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+div.hbox {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+input,
+select,
+textarea {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.sup {
+  position: relative;
+  top: -1ex;
+  font-size: 80%;
+}
+
+.textLink {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tooltip {
+  position: absolute;
+  display: none;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: #eee;
+  padding: 5px;
+}

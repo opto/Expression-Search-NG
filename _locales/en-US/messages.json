@@ -1,0 +1,338 @@
+{
+    "Bcc": {
+        "message": "Bcc"
+    },
+    "about.about": {
+        "message": "About"
+    },
+    "about.author": {
+        "message": "Author:"
+    },
+    "about.contributors.label": {
+        "message": "Contributors:"
+    },
+    "about.help": {
+        "message": "Help"
+    },
+    "about.changelog": {
+        "message": "Changelog"
+    },
+    "about.homepage": {
+        "message": "Home Page:"
+    },
+    "attachmentNameOrType": {
+        "message": "Attachment Name/Type"
+    },
+    "back2folder.keycode": {
+        "message": "VK_LEFT"
+    },
+    "back2folder.mod": {
+        "message": "accel alt"
+    },
+    "bodyRegex": {
+        "message": "Body (RegEx)"
+    },
+    "dateMatch": {
+        "message": "Date Match (2011/01/01)"
+    },
+    "dayTime": {
+        "message": "Time (Every Day)"
+    },
+    "dialog.settings": {
+        "message": "Settings"
+    },
+    "donate.image": {
+        "message": "/skin/paypal.ico"
+    },
+    "donate.label": {
+        "message": "Donate"
+    },
+    "dialog.c2s_match": {
+        "message": "Match"
+    },
+    "dialog.c2s_replace": {
+        "message": "Replace"
+    },
+    "dialog.c2s_replace_title": {
+        "message": "  Replace subject with regular expression before search  "
+    },
+    "dialog.c2s_settings": {
+        "message": "Click2Search Settings"
+    },
+    "dialog.help": {
+        "message": "Support the ongoing maintenance"
+    },
+    "dialog.move2bar": {
+        "message": "Move Expression Search To"
+    },
+    "dialog.move2menubar": {
+        "message": "Menu Bar"
+    },
+    "dialog.move2quicksearchbar": {
+        "message": "QuickSearchBar"
+    },
+    "dialog.move2tabbar": {
+        "message": "Tab Bar"
+    },
+    "dialog.move2toolbar": {
+        "message": "Mail Toolbar"
+    },
+    "dialog.searchmoreheaders": {
+        "message": "Search More Headers:"
+    },
+    "dialog.searchmoreheaderstooltip": {
+        "message": "A list of headers, which can be searched for. Header information in the message DB is updated only for new emails or after repairing a mail folder."
+    },
+    "dialog.title": {
+        "message": "Expression Search Options"
+    },
+    "dialog.save": {
+        "message": "Save"
+    },
+    "option.act_as_normal_filter": {
+        "message": "Act as Normal Filter when no tokens found in search string"
+    },
+    "option.c2s_enableCtrl": {
+        "message": "Enable Ctrl+RightClick for Searching"
+    },
+    "option.c2s_enableCtrlReplace": {
+        "message": "Use subject replace for Ctrl Combo"
+    },
+    "option.c2s_enableShift": {
+        "message": "Enable Shift+RightClick for Searching"
+    },
+    "option.c2s_enableShiftReplace": {
+        "message": "Use subject replace for Shift Combo"
+    },
+    "option.c2s_removeDomainName": {
+        "message": "Remove Domain Name for all email addresses"
+    },
+    "option.crash": {
+        "message": "Crash Reports"
+    },
+    "option.email": {
+        "message": "Send Email to author"
+    },
+    "option.enable_statusbar_info1": {
+        "message": "Show search tooltips for"
+    },
+    "option.enable_statusbar_info2": {
+        "message": "s when type, hide it"
+    },
+    "option.enable_statusbar_info3": {
+        "message": "s later after search was done or lost focus"
+    },
+    "option.enable_verbose_info": {
+        "message": "Show verbose information in error console"
+    },
+    "option.hidenormal": {
+        "message": "Hide Normal Filter"
+    },
+    "option.issues": {
+        "message": "File a bug report"
+    },
+    "option.load_virtual_folder_in_tab": {
+        "message": "Load Saved Search folder in a new Tab"
+    },
+    "option.ms": {
+        "message": "ms"
+    },
+    "option.results_label_size": {
+        "message": "size of 'search results' when not active:"
+    },
+    "option.results_label_size.auto": {
+        "message": "Minimize while in vertical layout and expression search in QuickSearchBar"
+    },
+    "option.results_label_size.hide": {
+        "message": "Minimize always"
+    },
+    "option.results_label_size.show": {
+        "message": "Keep the original"
+    },
+    "option.results_label_size.tip": {
+        "message": "here ↘"
+    },
+    "option.reusefolder": {
+        "message": "Keep selected folders for saved search"
+    },
+    "option.search_timeout": {
+        "message": "Set expression search input timeout to"
+    },
+    "option.search_timeout.tooltip_1": {
+        "message": "Start to search after you stop typing in the search inputbox for this time"
+    },
+    "option.search_timeout.tooltip_2": {
+        "message": "Hit Enter will start the search immediately"
+    },
+    "option.search_timeout.tooltip_3": {
+        "message": "Set to 0 will make the timeout really loooong"
+    },
+    "option.select_on_enter": {
+        "message": "Select first message after hit enter"
+    },
+    "option.showbuttonlabel": {
+        "message": "Customize icons in 'Quick Filter' bar:"
+    },
+    "option.showbuttonlabel.auto": {
+        "message": "Default, show icons and show/hide labels automatically"
+    },
+    "option.showbuttonlabel.hide": {
+        "message": "Hide labels"
+    },
+    "option.showbuttonlabel.hideall": {
+        "message": "Hide icons & labels"
+    },
+    "option.use_root_folder": {
+        "message": "Root folder of current account"
+    },
+    "option.when_press_ctrl_plus_enter": {
+        "message": "When press Ctrl+Enter, create/update virtual folder in:"
+    },
+    "focusSearch.key": {
+        "message": "b"
+    },
+    "focusSearch.mod": {
+        "message": "accel"
+    },
+    "fromRegex": {
+        "message": "From (RegEx)"
+    },
+    "headerRegex": {
+        "message": "Header (RegEx)"
+    },
+    "info.after": {
+        "message": "after:Mar 10, 2011\naf:(2011/03/01 -2011/03/09)\nafter:Mon, 25 Dec 1995 13:30:00 GMT\naf:(3:0 -4:0) will search for messages in current view that date between 3am to 4am EVERY day"
+    },
+    "info.all": {
+        "message": "search message within from, to, cc, or subject fields, and the body"
+    },
+    "info.attachment": {
+        "message": "attachment:yes or a:yes or a:no"
+    },
+    "info.bcc": {
+        "message": "BCC field contains"
+    },
+    "info.before": {
+        "message": "before:2011/03/09 07:12:00\nbe:09 Mar 2011 05:00:00"
+    },
+    "info.blank": {
+        "message": "Please type keywords to search, click this line for help"
+    },
+    "info.body": {
+        "message": "Body contains"
+    },
+    "info.bodyre": {
+        "message": "bodyre:/hello.*world/i\nBody match\nWarning! May crash your Thunderbird"
+    },
+    "info.cc": {
+        "message": "CC field contains"
+    },
+    "info.date": {
+        "message": "date:yyyy/mm/dd hh:mm:ss\ndate:2011/01\ndate:2011/01/03"
+    },
+    "info.days": {
+        "message": "age:3 or older_than:today or days:(3 -5)\ntoday means -1, week means 7 and month means 30"
+    },
+    "info.disable": {
+        "message": "You can disable this tooltip in option dialog"
+    },
+    "info.filename": {
+        "message": "filename:foo.doc or fi:image or fn:msword or file:html\nsearches for an attachment name or type"
+    },
+    "info.from": {
+        "message": "from:(Alice or Bob)\nSearches From field"
+    },
+    "info.fromre": {
+        "message": "fromre:/^[a-d].*[m-z]$/i\nSearches From field using regular expression"
+    },
+    "info.fromto": {
+        "message": "fromto:(Alice)\nFrom, To, CC or BCC field contains"
+    },
+    "info.gloda": {
+        "message": "Trigger gloda search if enabled"
+    },
+    "info.headerre": {
+        "message": "headerre:List-Id"
+    },
+    "info.helpLine1": {
+        "message": "You can disable this tooltip in option dialog"
+    },
+    "info.helpLine2": {
+        "message": "Please type keyword to search"
+    },
+    "info.newer_than": {
+        "message": "n:8 or nt:7week or newer_than:1year"
+    },
+    "info.only": {
+        "message": "only:tom\ntom should be the only recipients in to field"
+    },
+    "info.regex": {
+        "message": "regex:/^begin/i or re:end$ or r:/\\d+\\s*\\d+/\nSubject matches"
+    },
+    "info.simple": {
+        "message": "simple:hello'\nSubject field contains, support special characters"
+    },
+    "info.size": {
+        "message": "size:10 or size:1.4M\nMessage Size big than"
+    },
+    "info.smaller": {
+        "message": "smaller:1G or sm:1024\nMessage Size less than"
+    },
+    "info.status": {
+        "message": "is:replied or i:UnRead or status:Forwarded or status:F\nThe status can be one of Replied, Read, Marked/Star, Forwarded, UnRead, New, ImapDeleted or Attachment."
+    },
+    "info.subject": {
+        "message": "subject:(Hello -World!)\nSearches Subject to Contains Hello but not World!"
+    },
+    "info.tag": {
+        "message": "tag:Important\nTag contains\ntag:NA means no tag"
+    },
+    "info.to": {
+        "message": "To or CC field contains"
+    },
+    "info.tonocc": {
+        "message": "To fileld contains"
+    },
+    "info.tore": {
+        "message": "tore:/^[a-d].*[m-z]$/i\nSearches recipients(To/Cc/Bcc) field using regular expression"
+    },
+    "option.help": {
+        "message": "Help"
+    },
+    "subjectRegex": {
+        "message": "Subject (RegEx)"
+    },
+    "subjectSimple": {
+        "message": "Subject (Long)"
+    },
+    "textbox.emptyText.base": {
+        "message": "Expression Search... #1"
+    },
+    "toRegex": {
+        "message": "Recipients (To/Cc/Bcc RegEx)"
+    },
+    "toSomebodyOnly": {
+        "message": "To Somebody Only"
+    },
+    "virtualfolder.clearall": {
+        "message": "Clear All"
+    },
+    "virtualfolder.modechild": {
+        "message": "Current & Children"
+    },
+    "virtualfolder.modedescendants": {
+        "message": "Current & Descendants"
+    },
+    "virtualfolder.modelabel": {
+        "message": "When click change:"
+    },
+    "virtualfolder.modesingle": {
+        "message": "Current Only"
+    },
+    "virtualfolder.selectall": {
+        "message": "Select All"
+    },
+    "expressionsearch.helpfile": {
+        "message": "/html/help_en.html"
+    }
+}
