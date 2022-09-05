@@ -2,7 +2,7 @@
 //  MPL2.0
 // Expression Search Filter
 // MessageTextFilter didn't want me to extend it much, so I have to define mine.
-//Changes for TB 78+ (c) by Klaus Buecher/opto 2020-2021
+//Changes for TB 78/91/102+ (c) by Klaus Buecher/opto 2020-2022
 "use strict";
 
 var EXPORTED_SYMBOLS = ["ExpressionSearchFilter"];
@@ -251,9 +251,12 @@ class BodyTermBase extends CustomerTermBase {
 }
 
 // File scope code is being executed the first time the JSM is loaded. This adds our custom terms.
-(function AddExpressionSearchCustomerTerms() {
+(
+  function AddExpressionSearchCustomerTerms() {
   // search subject with regular expression, reference FiltaQuilla by Kent James
   // case sensitive
+  //bad workaround: the global GlodaUtils is only visible after a delay, as created by a debugger statement.
+  var { GlodaUtils } = ChromeUtils.import("resource:///modules/gloda/GlodaUtils.jsm");// for GlodaUtils.deMime and parseMailAddresses
   let subjectRegex = new CustomerTermBase("subjectRegex", [Ci.nsMsgSearchOp.Matches, Ci.nsMsgSearchOp.DoesntMatch]);
   subjectRegex.match = function (aMsgHdr, aSearchValue, aSearchOp) {
     // aMsgHdr.subject is mime encoded, also aMsgHdr.subject may has line breaks in it
@@ -335,7 +338,7 @@ class BodyTermBase extends CustomerTermBase {
   let toSomebodyOnly = new CustomerTermBase("toSomebodyOnly", [Ci.nsMsgSearchOp.Contains, Ci.nsMsgSearchOp.DoesntContain]);
   toSomebodyOnly.match = function (aMsgHdr, aSearchValue, aSearchOp) {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=522886 / https://bugzilla.mozilla.org/show_bug.cgi?id=699588
-    let mailRecipients = GlodaUtils.parseMailAddresses((aMsgHdr.mime2DecodedTo || aMsgHdr.mime2DecodedRecipients).toLowerCase());
+    let mailRecipients = GlodaUtils.parseMailAddresses(( aMsgHdr.mime2DecodedRecipients).toLowerCase());//aMsgHdr.mime2DecodedTo ||
     let searchRecipients = GlodaUtils.parseMailAddresses(aSearchValue.toLowerCase());
     let match = (mailRecipients.count == searchRecipients.count);
     match = match && searchRecipients.addresses.every(function (searchOne, index, array) {
