@@ -6,7 +6,7 @@
       "strict_max_version": "104.0"
     }
   },
-  "version": "3.4.3",
+  "version": "3.4.4",
   "manifest_version": 2,
   "name": "Expression Search - NG",
   "description": "Type 'from:fred to:tom' or 'f:fred t:tom' to see all messages from Fred to Tom in the current view.",

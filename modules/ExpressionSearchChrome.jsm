@@ -172,7 +172,7 @@ var ExpressionSearchChrome = {
       case "c2s_regexpReplace":
       case "installed_version":
       case "virtual_folder_path":
-        this.prefs.getStringPref(data);
+        this.options[data] = this.prefs.getStringPref(data);
         break;
       default:
         ExpressionSearchLog.log("Unknown perf key:" + data, "Error", 1);
