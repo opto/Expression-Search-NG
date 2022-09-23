@@ -1,0 +1,292 @@
+<!--
+/*
+ * Code for TB 78 or later: Creative Commons (CC BY-ND 4.0):
+ *      Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)
+ *
+ * Copyright: Klaus Buecher/opto 2021
+ * Contributors: see Changes.txt
+ */
+-->
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <title>Welcome to Search++/Quicker Quicksearch</title>
+  <link rel="stylesheet" href="popup.css" type="text/css">
+  <script type="application/javascript" src="/scripts/tools.js"></script>
+  <script type="application/javascript" src="/scripts/listener.js"></script>
+</head>
+
+<body>
+  <div id="innerwrapper">
+    <h1>Version history</h1>
+    <ul>
+
+      <li>
+        Version 2.6beta: <ul>
+          <li>Works with TB78.9,1, and is now restartless</li>
+
+        </ul>
+      </li>
+
+
+      <li>
+        Version 2.5beta: <ul>
+          <li>Works with TB78, about + help dialog</li>
+
+        </ul>
+      </li>
+      <li>
+        Version 2.4beta: <ul>
+          <li>Works with TB78, drop support for old TB pre 78</li>
+          <li></li>
+        </ul>
+      </li>
+      <li>
+        Version 1.4: <ul>
+          <li>Works with TB 63 nightly, drop support for TB older than 60</li>
+          <li>Change from legacy XUL overly addon to restartless addon</li>
+        </ul>
+      </li>
+      <li>
+        Version 1.3: <ul>
+          <li>Works with TB 60 nightly, drop support for TB older than 52</li>
+          <li>Fixed issue with 'only' filter</li>
+        </ul>
+      </li>
+      <li>
+        Version 1.2: <ul>
+          <li>Add 'fromto' token</li>
+          <li>Add option for search input box timeout</li>
+          <li>Fixed issue with OSX</li>
+          <li>Fixed issue with TB 55</li>
+        </ul>
+      </li>
+      <li>
+        Version 1.1: <ul>
+          <li>Works with TB 56 nightly</li>
+        </ul>
+      </li>
+      <li>
+        Version 1.0: <ul>
+          <li>Works with TB 45 nightly</li>
+        </ul>
+      </li>
+      <li>
+        Version 0.9: <ul>
+          <li>Compatible with TB40 nightly and drop support for TB version less than 31</li>
+          <li>Attachment search is fully supported and won't crash TB any more, for offline messages only.</li>
+          <li>Add option to put the Expression Search field into the Tab bar</li>
+          <li>Add option to (not) remove the domain name for click2search</li>
+          <li>Add option to hide the quick search filter icons</li>
+          <li>Looks better on OSX and Ubuntu</li>
+        </ul>
+      </li>
+      <li>
+        Version 0.8.8: <ul>
+          <li>Compatible with TB31 nightly and drop support for TB 5~11</li>
+          <li>regex search in body is fully supported and won't crash TB any more, for offline messages only.</li>
+        </ul>
+      </li>
+      <li>
+        Version 0.8.7: <ul>
+          <li>Compatible with TB29 nightly</li>
+          <li>Added regex search for from/to</li>
+          <li>Added option to make the "search results" doesn't looks so big when search is not active</li>
+          <li>Changed hotkey from Ctrl+Left to Ctrl+Alt+Left for back to original folder after Ctrl+Enter</li>
+        </ul>
+      </li>
+      <li>
+        Version 0.8.6: <ul>
+          <li>getCellProperties API change for TB22</li>
+          <li>Add options for tooltip show/hide time</li>
+          <li>change the flexibility of other element to make my search box bigger</li>
+          <li>Add "Re: " to subject if it's a reply email for subject regex search</li>
+          <li>Add 'Select All', 'Clear All' & select mode when modify virtual folder's folders.</li>
+          <li>Fix bug: Donate through palpay directly not working because I'm in China</li>
+        </ul>
+      </li>
+      <li>
+        Version 0.8.5: <ul>
+          <li>Added options for show or hide text labels of 'quick filter' buttons</li>
+          <li>Added options to seperate subject replacment for Ctrl/Shift+RightClick</li>
+          <li>Added options for load Saved Search folder in a new Tab</li>
+          <li>Added hotkey Ctrl+Left for back to original folder after Ctrl+Enter</li>
+          <li>Added regex search for headers</li>
+          <li>Added regex search for body</li>
+          <li>Added newer_than/older_than support</li>
+          <li>Added size/larger/smaller support</li>
+          <li>Support NA for tag search, Star for status search</li>
+          <li>Added today/yesterday/day/month/year for days search</li>
+          <li>Added status bar icon & tips</li>
+          <li>Added donate buttons</li>
+          <li>Added scrollbar for option window when needed</li>
+          <li>Fixed crash issue when ctrl2search on headers</li>
+          <li>Fixed bugs for Ctrl+Enter launch gloda search when no messages found</li>
+          <li>Fixed bugs for pined quick search buttons not work when switch between folders</li>
+          <li>Fixed bugs for transparent background help page on Mac OS</li>
+          <li>Fixed bugs for click2search triggers context menu on Mac OS</li>
+          <li>Compatible with TB5~TB23</li>
+        </ul>
+      </li>
+      <li>
+        Version 0.8.4: <ul>
+          <li>Added tonocc/bcc/cc/only/age search</li>
+          <li>Added options for show verbose information</li>
+          <li>Added options for where to create expression search folders</li>
+          <li>Fixed '<>' in search pattern issue when use click2search</li>
+          <li>Fixed search issue when use click2search and address is in address book</li>
+          <li>Fixed hang issue when '\t' exists in search pattern</li>
+          <li>Fixed minor bug that extension defined search terms show when search in address book</li>
+          <li>Fixed one bug that icons for quick search may missing when move search buttons to menubar or toolbar
+          </li>
+        </ul>
+      </li>
+      <li>
+        Version 0.8.3: Fixed context menu missing issue when click right button.
+      </li>
+      <li>
+        Version 0.8.2: Work with Thunderbird 5. Fixed search bar shown issue. Fixed issue when search with complicated
+        expressions.
+      </li>
+      <li>
+        Version 0.8.1: Fixed a bug: During search, 'Continue search with all folders' message will shown.
+      </li>
+      <li>
+        Version 0.8: <ul>
+          <li>Work with Thunderbird 3.3.</li>
+          <li>Added Click2Search similar to The Bat!</li>
+          <li>Added options to move expression search box to toolbar/menubar</li>
+          <li>Added options to act as normal search box</li>
+          <li>Added options to select 1st messages after hit enter in search box</li>
+          <li>Hit enter will launch gloda search if no message found</li>
+          <li>Hit Ctrl+B will focus on search box</li>
+          <li>before/after search can now search time within day</li>
+          <li>Added simple/regex/date search</li>
+          <li>Added filename for attachment name/type search (experimental, may crash)</li>
+        </ul>
+      </li>
+      <li>
+        Version 0.7: Added 'status/is' search. Added 'before/after' search. Added numerical calculation.
+      </li>
+      <li>
+        Version 0.6: Added Help & Contact link to Options dialog.
+      </li>
+      <li>
+        Version 0.5: Added Options dialog.
+      </li>
+      <li>
+        Version 0.4: Work with Thunderbird 3.1 .
+      </li>
+      <li>
+        Version 0.3: Shift+Enter to launch gloda search. Fix 'Cc','Cu','Ci','Cr' redefine error.
+      </li>
+      <li>
+        Version 0.2: Added 'g:' search mode for gloda search. Press 'Esc' in thread tree will clear the search
+        criteria.
+      </li>
+      <li>
+        Version 0.1: First version, changed from GMailUI to make it works for Thunderbird 3.
+      </li>
+    </ul>
+
+    <h1>Known Issues of this extension or Thunderbird</h1>
+    <ul>
+      <li>
+        Shift+RightClick May not work for some versions of Thunderbird.
+      </li>
+      <li>
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=224392'>Bug 224392</a> - Add
+        ability to filter by
+        attachment name (extension)
+      </li>
+      <li>
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=338761'>Bug 338761</a> -
+        searching
+        body of emails for text
+        doesn't match word-wrapped text
+      </li>
+      <li>
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=460737'>Bug 460737</a> -
+        Quickfilter ignores searches for
+        friendly display names from address book contacts, as displayed on message header and message list by default
+        (no or incomplete results for From, To, CC, BCC)
+      </li>
+      <li>
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=522886'>Bug 522886</a> -
+        Implement
+        "Recipients" column
+        that shows all recipients (To, CC, and BCC)
+      </li>
+      <li>
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=546925'>Bug 546925</a> - custom
+        header search is
+        non-functional ('Run search on server' of Edit/Find/Search Messages doesn't work any more)
+      </li>
+      <li>
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=570815'>Bug 570815</a> -
+        (qfwidget)
+        Make Quickfilter
+        optionally available as simple searchbox widget+stickypin (with filter criteria in persistent popup panel &/or
+        dropdown; toolbar customization)
+      </li>
+      <li class="bz_closed">
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=124641'>Bug 124641</a> -
+        Thunderbird does not handle
+        multi-line headers correctly when search term spans lines
+      </li>
+      <li class="bz_closed">
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=363238'>Bug 363238</a> - saved
+        searches fail for searches
+        on x-headers
+      </li>
+      <li class="bz_closed">
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=474730'>Bug 474730</a> - should
+        search newest first -
+        searching returns messages in bad order, making searches very time-consuming and irrelevant for large
+        databases
+      </li>
+      <li class="bz_closed">
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=564328'>Bug 564328</a> - Keyboard
+        shortcut Ctrl+F conflict
+        and cmd_find ambiguity, used for both Find in This Message and Quick Filter
+      </li>
+      <li class="bz_closed">
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=600140'>Bug 600140</a> - 'Unread'
+        quick filter hides some
+        unread messages (the beginning of a thread)
+      </li>
+      <li class="bz_closed">
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=607295'>Bug 607295</a> - Provide
+        UI
+        for new archive
+        granularity and folder structure options
+      </li>
+      <li class="bz_closed">
+        <a href="#" data-external-href='https://bugzilla.mozilla.org/show_bug.cgi?id=625472'>Bug 625472</a> - Quick
+        search processes input
+        after hiding it with escape
+      </li>
+    </ul>
+
+    <p>Compared with original GMailUI 0.6, these features are still missing:
+    <ul>
+      <li>Use 'Y' to archive selected mail to archive folder (use 'a')</li>
+      <li>Use J/K to move messages up and down, and Ctrl+J to mark a message as junk (conflict with builtin key
+        mapping,
+        use 'f/b' instead)</li>
+      <li>Key '/' focuses on the quick search bar (use Ctrl+F)</li>
+    </ul>
+    If you do need to change the hotkeys, please try the <a href="#"
+      data-external-href='https://addons.thunderbird.net/en-US/thunderbird/addon/nostalgy_ng/'>Nostalgy++</a> extension,
+    for easy
+    archiving of
+    emails.
+    </p>
+  </div>
+</body>
+
+</html>

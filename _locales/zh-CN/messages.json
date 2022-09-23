@@ -1,0 +1,338 @@
+{
+    "Bcc": {
+        "message": "密件抄送"
+    },
+    "about.about": {
+        "message": "关于"
+    },
+    "about.author": {
+        "message": "作者:"
+    },
+    "about.contributors.label": {
+        "message": "参与作者:"
+    },
+    "about.help": {
+        "message": "帮助"
+    },
+    "about.changelog": {
+        "message": "Changelog"
+    },
+    "about.homepage": {
+        "message": "主页:"
+    },
+    "attachmentNameOrType": {
+        "message": "附件名字或类型"
+    },
+    "back2folder.keycode": {
+        "message": "VK_LEFT"
+    },
+    "back2folder.mod": {
+        "message": "accel alt"
+    },
+    "bodyRegex": {
+        "message": "正文 (正则表达式)"
+    },
+    "dateMatch": {
+        "message": "日期匹配 (2011/01/01)"
+    },
+    "dayTime": {
+        "message": "时间 (每天)"
+    },
+    "dialog.settings": {
+        "message": "设置"
+    },
+    "donate.image": {
+        "message": "/skin/paypal.ico"
+    },
+    "donate.label": {
+        "message": "资助"
+    },
+    "dialog.c2s_match": {
+        "message": "匹配"
+    },
+    "dialog.c2s_replace": {
+        "message": "替换"
+    },
+    "dialog.c2s_replace_title": {
+        "message": "  搜索前使用正则表达式替换标题  "
+    },
+    "dialog.c2s_settings": {
+        "message": "设置点击搜索"
+    },
+    "dialog.help": {
+        "message": "Support the ongoing maintenance"
+    },
+    "dialog.move2bar": {
+        "message": "移动 Expression Search 到"
+    },
+    "dialog.move2menubar": {
+        "message": "菜单栏"
+    },
+    "dialog.move2quicksearchbar": {
+        "message": "快速搜索栏"
+    },
+    "dialog.move2tabbar": {
+        "message": "标签栏"
+    },
+    "dialog.move2toolbar": {
+        "message": "工具栏"
+    },
+    "dialog.searchmoreheaders": {
+        "message": "搜索更多的邮件头:"
+    },
+    "dialog.searchmoreheaderstooltip": {
+        "message": "可以搜索的标题列表。邮件数据库中的标题信息仅在新电子邮件或邮件文件夹修复后更新"
+    },
+    "dialog.title": {
+        "message": "Expression Search 首选项"
+    },
+    "dialog.save": {
+        "message": "节省"
+    },
+    "option.act_as_normal_filter": {
+        "message": "当被搜索字符串中没有表达式搜索的命令时，弹出选择框"
+    },
+    "option.c2s_enableCtrl": {
+        "message": "邮件列表中按 Ctrl+鼠标右键 执行搜索"
+    },
+    "option.c2s_enableCtrlReplace": {
+        "message": "Ctrl组合搜索时使用下面的替换"
+    },
+    "option.c2s_enableShift": {
+        "message": "邮件列表中按 Shift+鼠标右键 执行搜索"
+    },
+    "option.c2s_enableShiftReplace": {
+        "message": "Shift组合搜索时使用下面的替换"
+    },
+    "option.c2s_removeDomainName": {
+        "message": "删除所有邮件地址里的域名"
+    },
+    "option.crash": {
+        "message": "查看雷鸟崩溃报告"
+    },
+    "option.email": {
+        "message": "给作者发邮件"
+    },
+    "option.enable_statusbar_info1": {
+        "message": "输入时显示"
+    },
+    "option.enable_statusbar_info2": {
+        "message": "秒的帮助信息，在搜索完成或者失去焦点后"
+    },
+    "option.enable_statusbar_info3": {
+        "message": "秒自动隐藏"
+    },
+    "option.enable_verbose_info": {
+        "message": "在控制台中显示详细信息"
+    },
+    "option.hidenormal": {
+        "message": "隐藏'过滤这些消息...'输入框"
+    },
+    "option.issues": {
+        "message": "报告软件错误或者问题"
+    },
+    "option.load_virtual_folder_in_tab": {
+        "message": "在新的Tab中打开保存搜索目录/虚拟目录"
+    },
+    "option.ms": {
+        "message": "毫秒"
+    },
+    "option.results_label_size": {
+        "message": "搜索结果的大小 (未激活时):"
+    },
+    "option.results_label_size.auto": {
+        "message": "且雷鸟处于垂直拆分并且表达式搜索框处于快速搜索栏时最小化'搜索结果'的"
+    },
+    "option.results_label_size.hide": {
+        "message": "时最小化'搜索结果'的"
+    },
+    "option.results_label_size.show": {
+        "message": "时保持'搜索结果'的原始"
+    },
+    "option.results_label_size.tip": {
+        "message": "这里 ↘"
+    },
+    "option.reusefolder": {
+        "message": "重新生成保存搜索时不改变选其中的文件夹选择"
+    },
+    "option.search_timeout": {
+        "message": "设置表达式搜索框超时时间为"
+    },
+    "option.search_timeout.tooltip_1": {
+        "message": "停止输入这么长时间后开始搜索"
+    },
+    "option.search_timeout.tooltip_2": {
+        "message": "但当按下回车键时立即搜索"
+    },
+    "option.search_timeout.tooltip_3": {
+        "message": "设置为0的话你将得到一个非常长长长长长长长的时间"
+    },
+    "option.select_on_enter": {
+        "message": "按回车选中第一条邮件"
+    },
+    "option.showbuttonlabel": {
+        "message": "自定义“快速过滤器”栏中的图标"
+    },
+    "option.showbuttonlabel.auto": {
+        "message": "默认，自动显示图标和显示/隐藏标签"
+    },
+    "option.showbuttonlabel.hide": {
+        "message": "隐藏标签"
+    },
+    "option.showbuttonlabel.hideall": {
+        "message": "隐藏图标和标签"
+    },
+    "option.use_root_folder": {
+        "message": "当前目录的根目录"
+    },
+    "option.when_press_ctrl_plus_enter": {
+        "message": "当按下Ctrl+Enter键时，在下面目录里创建或更新ExpressionSearch虚拟目录:"
+    },
+    "focusSearch.key": {
+        "message": "b"
+    },
+    "focusSearch.mod": {
+        "message": "accel"
+    },
+    "fromRegex": {
+        "message": "发信人 (正则表达式)"
+    },
+    "headerRegex": {
+        "message": "邮件头 (正则表达式)"
+    },
+    "info.after": {
+        "message": "after:Mar 10, 2011\naf:(2011/03/01 -2011/03/09)\nafter:Mon, 25 Dec 1995 13:30:00 GMT\naf:(3:0 -4:0) 将搜索每天3到4点的邮件"
+    },
+    "info.all": {
+        "message": "搜索所有from, to, cc, 或者subject以及body符合的邮件"
+    },
+    "info.attachment": {
+        "message": "attachment:yes 或者 a:yes 或者 a:no"
+    },
+    "info.bcc": {
+        "message": "BCC包含"
+    },
+    "info.before": {
+        "message": "before:2011/03/09 07:12:00\nbe:09 Mar 2011 05:00:00"
+    },
+    "info.blank": {
+        "message": "请输入表达式进行搜索，单击此行可以查看帮助文件"
+    },
+    "info.body": {
+        "message": "Body 包含"
+    },
+    "info.bodyre": {
+        "message": "bodyre:/hello.*world/i\n邮件正文匹配正则表达式\n警告!可能导致雷鸟崩溃"
+    },
+    "info.cc": {
+        "message": "CC 包含"
+    },
+    "info.date": {
+        "message": "date:yyyy/mm/dd hh:mm:ss\ndate:2011/01\ndate:2011/01/03"
+    },
+    "info.days": {
+        "message": "age:3 或者 older_than:today 或者 days:(3 -5)\ntoday 相当于 -1, week 相当于 7, month 相当于 30"
+    },
+    "info.disable": {
+        "message": "您可以在选项里面关闭此提示"
+    },
+    "info.filename": {
+        "message": "filename:foo.doc 或者 fi:image 或者 fn:msword 或者 file:html\n搜索附件的名字或者类型(不成熟)"
+    },
+    "info.from": {
+        "message": "from:(Alice 或者 Bob)\n搜索From"
+    },
+    "info.fromre": {
+        "message": "fromre:/[a-d]test/i\n使用正则表达式搜索From"
+    },
+    "info.fromto": {
+        "message": "fromto:(Alice)\nFrom 或者 To 或者 CC 或者 BCC 包含"
+    },
+    "info.gloda": {
+        "message": "如果使能了全局搜索，那么就使用它"
+    },
+    "info.headerre": {
+        "message": "headerre:List-Id"
+    },
+    "info.helpLine1": {
+        "message": "您可以在选项里面关闭此提示"
+    },
+    "info.helpLine2": {
+        "message": "请输入表达式进行搜索"
+    },
+    "info.newer_than": {
+        "message": "n:8 或者 nt:7week 或者 newer_than:1year"
+    },
+    "info.only": {
+        "message": "only:tom\n收件人仅仅包含tom"
+    },
+    "info.regex": {
+        "message": "regex:/^begin/i 或者 re:end$ 或者 r:/\\d+\\s*\\d+/\n标题匹配正则表达式"
+    },
+    "info.simple": {
+        "message": "simple:hello'\n标题包含(支持特殊字符)"
+    },
+    "info.size": {
+        "message": "size:10 或者 size:1.4M\n邮件大小超过"
+    },
+    "info.smaller": {
+        "message": "smaller:1G 或者 sm:1024\n邮件大小小于"
+    },
+    "info.status": {
+        "message": "is:replied 或者 i:UnRead 或者 status:Forwarded 或者 status:F\nstatus可以是Replied, Read, Marked/Star, Forwarded, UnRead, New, ImapDeleted 或者 Attachment中的任意一个."
+    },
+    "info.subject": {
+        "message": "subject:(Hello -World!)\n搜索标题中含有Hello but not World!的邮件"
+    },
+    "info.tag": {
+        "message": "tag:Important\nTag 包含\ntag:NA意味着没有任何的标记"
+    },
+    "info.to": {
+        "message": "To 或者 CC 包含"
+    },
+    "info.tonocc": {
+        "message": "To 包含"
+    },
+    "info.tore": {
+        "message": "tore:/[a-d]test/i\n使用正则表达式搜索收信人(To/Cc/Bcc)"
+    },
+    "option.help": {
+        "message": "帮助"
+    },
+    "subjectRegex": {
+        "message": "标题 (正则表达式)"
+    },
+    "subjectSimple": {
+        "message": "标题 (长)"
+    },
+    "textbox.emptyText.base": {
+        "message": "表达式搜索... #1"
+    },
+    "toRegex": {
+        "message": "收信人 (To/Cc/Bcc 正则表达式)"
+    },
+    "toSomebodyOnly": {
+        "message": "仅发送给某人"
+    },
+    "virtualfolder.clearall": {
+        "message": "清空选择"
+    },
+    "virtualfolder.modechild": {
+        "message": "当前项以及子节点"
+    },
+    "virtualfolder.modedescendants": {
+        "message": "当前项以及以下所有子节点"
+    },
+    "virtualfolder.modelabel": {
+        "message": "鼠标单击时改变"
+    },
+    "virtualfolder.modesingle": {
+        "message": "仅当前项"
+    },
+    "virtualfolder.selectall": {
+        "message": "选择所有"
+    },
+    "expressionsearch.helpfile": {
+        "message": "/html/help_en.html"
+    }
+}
