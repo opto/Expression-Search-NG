@@ -1,0 +1,173 @@
+<!--
+/*
+ * Code for TB 78 or later: Creative Commons (CC BY-ND 4.0):
+ *      Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)
+ *
+ * Copyright: Klaus Buecher/opto 2021
+ * Contributors: see Changes.txt
+ */
+-->
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <title>Expression Search NG: Welcome</title>
+  <link rel="stylesheet" href="popup.css" type="text/css">
+  <script type="application/javascript" src="/scripts/tools.js"></script>
+  <script type="application/javascript" src="/scripts/listener.js"></script>
+</head>
+
+<body>
+  <div id="innerwrapper">
+    <h1>Successfully installed {addon} {version}.</h1>
+    <h2>Features</h2>
+
+    <p><b>Expression Search / GMailUI - NG </b>is an extension to Thunderbird which adds powerful message searching
+      features.
+      Init by Ken Mixter, developed over many years by Opera Wang, updated to TB 78+ by Klaus Buecher/opto.</p>
+
+    <p>
+    <ul>
+      <li> Type "from:fred to:tom attachment:yes" or "f:fred t:tom att:yes" to see all messages from Fred to Tom in
+        the
+        current view that have an attachment.<br /></li>
+      <li> Type "hello world" to search within the current view for this string in subject/from/to/cc.<br /></li>
+      <li> Type "s:bbb t:(oo -pp)" to see all messages with subject bbb, send to oo but not to pp.</li>
+      <li> Press Ctrl+Enter to have this search apply to all folders through virtual folder. (coming back soon)<br />
+      </li>
+      <li> Press Shift+Enter to invoke Gloda Search in all indexed folders. (coming back soon)<br /></li>
+      <li> Use Ctrl/Shift+Right Click to search the clicked subject/From/Recipient. (coming back soon)<br /></li>
+    </ul>
+    </p>
+
+    <p style="text-align:center"><b>This add-on is constantly updated for newer versions of Thunderbird and it is
+        gratefully appreciated if you can support my work with a donation.</b></p>
+    <p class="actionlinks" style="margin: 2em 0 4em 0">
+      <a data-external-href="https://www.paypal.com/donate?hosted_button_id=EMVA9S5N54UEW">I want to contribute with a
+        one time donation</a>
+    </p>
+
+    <h2>Getting started</h2>
+    <ul>
+      <li>Read the <a href="#" data-window-href="expressionsearch.helpfile">help page</a> for a detailed description of
+        Expression Search's features.</li>
+      <li>Report an issue or a feature request at the <a
+          data-external-href='https://github.com/opto/expression-search-NG/issues' href="#">GitHub
+          repository</a> of this extension.</li>
+      <li>Check out the <a href="#" data-window-href="/html/changelog.html">version history</a>.</li>
+    </ul>
+
+
+    <h2>Other addons by Klaus Buecher/opto <small><a href="#" data-window-href="otheraddons.html">more</a></h2></small>
+
+
+    <p><b>Nostalgy++</b>: Global search(++) dialog for emails, now displayed in a tab (can be multiple tabs, e.g. per
+      account). Adds a message display to the search dialog.<br />
+      Easy
+      archiving/moving of emails to their destination folders,
+      with autocomplete of folder names and rules for suggested folder.
+      Compose window: always display cc or bcc, easy selecting input fields (to, cc, bcc, body, attachments), etc.
+      <button id="addonNos" value='https://addons.thunderbird.net/addon/nostalgy_ng/' class="button">...more</button>
+    </p>
+
+    <p><b>Topic Tree/Notebook for TB</b>: A place to keep notes and ideas. Notes can be styled (wysiwyg or html) and can
+      contain images,
+      tables, copies of webpages etc. Email/print notes, backup and restore the notebook. Search for note titles, or
+      fulltext search inside notes.
+      <button id="addonTop" value='https://addons.thunderbird.net/addon/topic-tree-notebook' class="button">...more
+      </button>
+    </p>
+
+    <p><b>Text insert</b>: AutoUp(*): After a sentence end, always start first word with a capital letter, or convert to
+      capital if mistyped. <br>
+      Easy inserting standard text into compose. br+ctrl-D converts to 'best regards'. mfg+ctrl-D converts to 'Mit
+      freundlichen Grüssen'. Define your own
+      replacements. Inserted text can be formatted and may contain images.
+      After insert, the cursor can be in the middle of the replacement text, to continue writing between a 'hello' and
+      the regards.
+      <button id="addonTex" value='https://addons.thunderbird.net/addon/text-insert-text-blocks/'
+        class="button">...more</button>
+    </p>
+
+
+    <p><b>Attachment Viewer: Images, Office-Files, Slideshow</b>: Display office files inside Thunderbird, without
+      external office application. Attachment download dialog shows thumbnail of image. Image viewer with zoom, rotate,
+      flip,
+      slideshow etc.<button id="addonAtt" value='https://addons.thunderbird.net/addon/attachment-image-viewer/'
+        class="button">...more</button></p>
+    <p><b>XNote++</b>: Add notes to your emails to remind or to plan a reply.
+      <button id="addonXNo" value='https://addons.thunderbird.net/addon/xnotepp/' class="button">...more</button>
+    </p>
+
+
+    <h3>Thanks</h3>
+    <ul>
+      <li>
+        Ken Mixter - Original Author of GMailUI
+      </li>
+      <li>
+        Opera Wang 15 years of developing Expression Search/GmailUI
+      </li>
+      <li>
+        savo_msu - Author of <a href="#"
+          data-external-href='https://addons.thunderbird.net/af/thunderbird/addon/one-click-search/'>One Click
+          Search</a>
+      </li>
+      <li>
+        Kent James - Author of <a
+          href='https://addons.thunderbird.net/en-US/thunderbird/addon/filtaquilla/'>FiltaQuilla</a>
+      </li>
+      <li>
+        Jiten Dedhia - Suggest for 'toonly' search
+      </li>
+      <li>
+        Jonathan Kamens - Patch for TB56 support
+      </li>
+      <li>
+        Greg Cowan - Suggest for date search
+      </li>
+      <li>
+        Mike Martinez - Suggest for bcc search
+      </li>
+      <li>
+        Olivier - Suggest for Shift/Ctrl+Enter
+      </li>
+      <li>
+        Paul Sednaoui - Suggest for 'only' search
+      </li>
+      <li>
+        Randolf Ebelt - Find a bug when search with complicate expressions
+      </li>
+      <li>
+        Olivier Brodeur - Find a bug when no messages found, gloda launched when Ctrl+Enter
+      </li>
+      <li>
+        Lee Yeoh - Find a bug for pined quick search buttons not work
+      </li>
+      <li>
+        Tom Zhu - Suggest for Enter to focus message pane, and validations before release.
+      </li>
+      <li>
+        John Bieling - Substantial help for the update to TB 102.
+      </li>
+   </ul>
+
+    <h2>Feedback, Suggestions, and on-going Development</h2>
+    <p>Klaus Buecher/Opto's Home Page for TB 78/91/102+: <a
+        href='https://github.com/opto/expression-search-NG'>expression-search-NG</a></p>
+    <p>Opera Wang's Home Page (TB 60): <a href="#"
+        data-external-href='https://github.com/wangvisual/expression-search'>expression-search</a>,
+      not in active development</p>
+    <p>Ken Mixters Home Page: <a href="#" data-external-href='http://sites.google.com/site/kmixter/gmailui'>GMailUI</a>,
+      pre 2005</p>
+    <h3>Notes</h3>
+    <p>*AutoUp: inspired by Pastisman's AutoUp addon from 2012. Now works on non-English languages (e.g. with German
+      Umlaut).</p>
+
+  </div>
+</body>
+
+</html>
