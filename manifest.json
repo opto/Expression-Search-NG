@@ -1,0 +1,123 @@
+{
+  "applications": {
+    "gecko": {
+      "id": "expressionsearch@opto.one",
+      "strict_min_version": "91.0",
+      "strict_max_version": "112.0"
+    }
+  },
+  "version": "3.8.11",
+  "manifest_version": 2,
+  "name": "Expression Search - NG",
+  "description": "Type 'from:fred to:tom' or 'f:fred t:tom' to see all messages from Fred to Tom in the current view.",
+  "author": "Klaus Buecher, Opera Wang, Ken Mixter",
+   "default_locale": "en-US",
+  "homepage_url": "https://github.com/opto/expression-search-NG",
+  "icons": {
+    "32": "skin/icon.png",
+    "48": "skin/icon.png",
+    "64": "skin/icon.png"
+  },
+  "background": {
+    "scripts": [
+      "scripts/tools.js",
+      "ex-background.js"
+    ]
+  },
+  "options_ui": {
+    "page": "html/esPrefDialog.html",
+    "open_in_tab": true
+  },
+  "permissions": [
+    "accountsRead", "messagesRead", "management"
+  ],
+ 
+  "browser_action": {
+    "default_title": "Expression",
+    "default_icon": "/skin/find.svg"
+  
+  },
+
+  "commands": {
+    "search-query-builder": {
+      "suggested_key": {
+        "default": "Ctrl+Alt+E"
+
+      }
+    }
+
+  },
+
+
+  "experiment_apis": {
+    "ExpressionSearchTools": {
+      "schema": "api/ExpressionSearchTools/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "ExpressionSearch"
+          ]
+        ],
+        "script": "api/ExpressionSearchTools/implementation.js",
+        "events": [
+          "startup"
+        ]
+      }
+    },
+
+
+    "ExpressionSearch": {
+      "schema": "api/ExpressionSearch/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "ExpressionSearch"
+          ]
+        ],
+        "script": "api/ExpressionSearch/implementation.js",
+        "events": [
+          "startup"
+        ]
+      }
+    },
+
+
+    "LegacyPrefs": {
+      "schema": "api/LegacyPrefs/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "LegacyPrefs"
+          ]
+        ],
+        "script": "api/LegacyPrefs/implementation.js"
+      }
+    },
+    "NotifyTools": {
+      "schema": "api/NotifyTools/schema.json",
+      "parent": {
+        "scopes": [
+          "addon_parent"
+        ],
+        "paths": [
+          [
+            "NotifyTools"
+          ]
+        ],
+        "script": "api/NotifyTools/implementation.js",
+        "events": [
+          "startup"
+        ]
+      }
+    }
+  }
+}

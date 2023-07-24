@@ -1,0 +1,137 @@
+<!--
+/*
+ * License:  see License.txt
+ * Code addtions for TB 78 or later: Creative Commons (CC BY-ND 4.0):
+ *      Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0) 
+ 
+ * Contributors:  see Changes.txt
+ */
+
+-->
+
+<html>
+
+<style>
+  .button {
+    background-color: lightgrey;
+    /* Green */
+    border: none;
+    color: black;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  .button1 {
+    border-radius: 2px;
+  }
+
+  .button2 {
+    border-radius: 4px;
+  }
+
+  .button3 {
+    border-radius: 8px;
+  }
+
+  .button4 {
+    border-radius: 12px;
+  }
+
+  .button5 {
+    border-radius: 50%;
+  }
+
+
+  .vl {
+    border-left: 6px solid green;
+    margin-right: 4px;
+
+  }
+</style>
+
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Expression Search - Query Builder</title>
+
+
+
+
+</head>
+
+<body lang=DE>
+  <div>
+    Scroll messagelist up or down: <button class="button ">Up</button> <button class="button ">Down</button>
+    <span style = "float: right;">Search cockpit: fix/keep on top <input id ="ontop" value = "false" type = "checkbox" class="button">
+    </span>
+    <hr>
+    <b>Click button to enter search operator into searchbox and then enter searchterm: </b>
+
+    <!-- <label for="search">Searchexpression</label>  -->
+    <input type="text" id="search" size=140
+      placeholder="Enter search operator by mouse or keyboard, followed by searchterm. Can be followed by more pairs of operator:searchterm" />
+
+    <br>
+    <button class="button button2" data="from">from</button>
+    <button class="button button2" data="to">to</button>
+    <button class="button button2" data="cc">cc</button>
+    <button class="button button2" data="bcc">bcc</button>
+    <button class="button button2" data="tonocc">to-nocc</button>
+    <button class="button button2" data="only">only</button>
+    <button class="button button2" data="fromto">from-to</button>
+    <button class="button button2" data="-from">not from</button>
+    <button class="button button2" data="-to">not to</button>
+    <span class="vl"></span>
+    <button class="button button1" data="subject">subject</button>
+    <button class="button button1" data="simple">subject w spec chars</button>
+    <span class="vl"></span>
+    <button class="button button3" data="date">date</button>
+    <button class="button button3" data="age">age</button>
+    <button class="button button3" data="older_than">older than</button>
+    <button class="button button3" data="newer_than">newer than</button>
+    <button class="button button3" data="before">before</button>
+    <button class="button button3" data="after">after</button>
+    <span class="vl"></span>
+    <button class="button button4" data="size">size</button>
+    <button class="button button4" data="larger">larger</button>
+    <button class="button button4" data="smaller">smaller</button>
+    <button class="button button4" data="">attachment</button>
+    <button class="button button4" data="filename">filename</button>
+    <span class="vl"></span>
+    <button class="button button2" data="is">is</button>
+    <button class="button button3" data="status">status</button>
+    <button class="button button4" data="body">body</button>
+
+    <button class="button button1" data="label">tag</button>
+    <button class="button button2" data="all">all</button>
+    <span class="vl"></span>
+    <button class="button button2" data="g">Gloda-search</button>
+
+
+    <span class="vl"></span>
+
+    <p>These must be in last position:</p>
+    <button class="button button5" data="regex">subject-regex</button>
+    <button class="button button5" data="headerre">header-regex</button>
+    <button class="button button5" data="fromre">from-regex</button>
+    <button class="button button5" data="bodyre">body-regex</button>
+    <button class="button button5" data="tore">to-regex</button>
+    <button class="button button5" data="xnote" id = "xnote">XNote-search</button>
+
+
+
+
+  </div>
+
+
+  <script type="application/javascript" src="searchops.js"></script>
+</body>
+
+</html>
