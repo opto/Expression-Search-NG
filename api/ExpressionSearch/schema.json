@@ -1,0 +1,62 @@
+[
+  {
+    "namespace": "ExpressionSearch",
+    "functions": [
+      {
+        "name": "initPrefs",
+        "type": "function",
+        "async": true,
+        "parameters": []
+      },
+      {
+        "name": "getNotes",
+        "type": "function",
+        "async": true,
+        "parameters": []
+      },
+      {
+        "name": "setSearchValue",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "searchValue",
+            "type": "string",
+            "description": "text into searchbox"
+          }
+        ]
+      },      
+      {
+        "name": "initWindow",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "windowId",
+            "type": "integer"
+          }
+        ]
+      },
+      {
+        "name": "scrollMessageList",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "windowId",
+            "type": "integer"
+          },
+          {
+            "name": "upDown",
+            "type": "integer"
+          },
+          {
+            "name": "select",
+            "type": "integer"
+          }
+        ]
+      }
+
+    ]
+  }
+]

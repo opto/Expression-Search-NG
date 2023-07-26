@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Donations</title>
+  </head>
+  <body>
+    <h1 style="text-align: center;">Update to SuperNova - TB 115: Asking for
+      Donations</h1>
+    <p><br>
+    </p>
+    <p>There are very substantial code changes in TB 115. The main window has
+      been converted from XUL to HTML, many elements are gone or have a
+      different id, the 'QuickFilterBarMuxer' and the quickfilter-expando have
+      been replaced, mail:3pane is now about:3pane, and .....&nbsp; many more
+      changes.</p>
+    <p>I have tested that the conversion for TB 115 is doable and that filters
+      will run as before - already for the fundamental functionality, such as</p>
+    <p>s:subject f:fromsomewher t:tosomeone</p>
+    <p>That works in 115.</p>
+    <p><br>
+    </p>
+    <p>Now it needs a lot of work to bring everything into the new layout with
+      General toolbar, etc.</p>
+    <h3><span><b>Donations are very much welcome.</b></span></h3>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <input id="repeat" name="repeat" value="false" type="checkbox">Don't show
+    this request again (it will come back in a week)
+  </body>
+</html>

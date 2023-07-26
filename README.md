@@ -1,4 +1,4 @@
-                                                                          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <p>Expression Search / GMailUI is an extension to Thunderbird (versions 31.0+) which adds powerful message searching features.
 Init by Ken Mixter, developed over many years by Opera Wang, updated to TB 78+ by Klaus Buecher/opto.</p>
@@ -12,9 +12,8 @@ Use Ctrl/Shift+Right Click to search the clicked subject/From/Recipient.<br/>
 </p>
 
 <p>Expression Search's features are described below.</p>
-<p>The transfer to TB 78 is underway. Some features may not work yet. You can report issues at 
-  the home page for TB78: <a href='https://github.com/opto/expression-search-NG/issues'>expression-search-NG</a>
-<p> It is gratefully appreciated if you can support the transfer to TB 78 by a <a target = "_blank" href = 'https://www.paypal.com/donate?hosted_button_id=EMVA9S5N54UEW'>donation.</a> </p>
+<p>The compatibility to TB 115 Supernova is underway. Some features may not work yet. You can report issues at the plugin homepage: <a href='https://github.com/opto/expression-search-NG/issues'>expression-search-NG</a>
+<p> It is gratefully appreciated if you can support the transfer to TB 115 with a <a target = "_blank" href = 'https://www.paypal.com/donate?hosted_button_id=EMVA9S5N54UEW'>donation.</a> </p>
 </p>
 <h3>Search expressions and quick search key</h3>
 <p>

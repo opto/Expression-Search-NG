@@ -1,0 +1,47 @@
+[
+  {
+    "namespace": "ExpressionSearchTools",
+    "functions": [
+      {
+        "name": "setXNote",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id"
+          },
+          {
+            "name": "note",
+            "type": "any",
+            "description": "note text"
+          }
+        ]
+      },
+      {
+        "name": "deleteXNote",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id"
+          }
+        ]
+      },
+      {
+        "name": "initWindow",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "windowId",
+            "type": "integer"
+          }
+        ]
+      }
+    ]
+  }
+]

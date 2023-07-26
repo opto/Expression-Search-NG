@@ -1,0 +1,8 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. 
+   - modified from reply.svg (Thunderbird) by opto/Klaus Buecher
+   -->
+   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="context-fill" fill-opacity="context-fill-opacity" style=""><rect id="backgroundrect" width="100%" height="100%" x="0" y="0" fill="none" stroke="none"/>
+  
+<g class="currentLayer" style=""><title>Layer 1</title><path d="M6.663 6.033L7.768 7.36a1 1 0 1 1-1.536 1.28L3.198 5l3.034-3.64a1 1 0 0 1 1.536 1.28L6.612 4.028c4.068.15 6.474.909 7.282 2.525.933 1.864-.237 4.204-3.187 7.154a1 1 0 1 1-1.414-1.414c2.384-2.384 3.214-4.044 2.813-4.846-.366-.73-2.2-1.277-5.443-1.414z" id="svg_1" class="" fill="#000000" fill-opacity="1"/><path fill="#000000" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-dasharray="none" stroke-linejoin="miter" stroke-linecap="butt" stroke-dashoffset="" fill-rule="nonzero" opacity="1" marker-start="" marker-mid="" marker-end="" d="M15.714809853827148,-0.04877464461802106L4.007492508340135,15.073176926636052" id="svg_2" class="selected"/></g></svg>
